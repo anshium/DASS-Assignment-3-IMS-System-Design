@@ -1,0 +1,34 @@
+@startuml manage_users
+
+class SearchSystem {
+   + searchQuery: string
+   + searchResults: List<User>
+
+   + addSearchQuery()
+   + updateSearchQuery()
+   + search()
+}
+
+class UserManager {
+	+ roles: list<string>
+	+ priviledge: list<string>
+	
+	+ viewAllRoles()
+	+ viewAllPriviledges()
+	+ addNewRole()
+	+ removeRoll(role)
+	+ addNewPriviledge(priviledge)
+	+ removePriviledges(priviledge)
+	+ editUser(userID)
+	+ updateRole(userID, role)
+	+ updatePrivileges(userID, privilege)
+	'Set Standards'
+
+}
+
+
+class AuthenticationManager {
+    
+}
+
+@enduml
