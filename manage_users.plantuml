@@ -26,9 +26,4 @@ class UserManager {
 
 }
 
-
-class AuthenticationManager {
-    
-}
-
 @enduml
