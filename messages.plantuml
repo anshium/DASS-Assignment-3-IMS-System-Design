@@ -1,0 +1,29 @@
+@startuml messages
+
+class User {
+
+}
+
+class Message {
+    + MessageID
+    + Sender
+    + Recipient
+    + Message Content
+    + Timestamp
+}
+
+class CommunicationRecordingSystem {
+    + MessageIDs<List>
+
+	+ GetAllRecordings()
+	+ DeleteAllRecordings(password)
+	+ GetRecording(messageID)
+	+ DeleteRecording(messageID)
+}
+
+class Broadcaster {
+    + Message
+
+	
+}
+@enduml
