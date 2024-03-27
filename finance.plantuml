@@ -35,7 +35,12 @@ class feeCollectionDateDesigningSystem {
 }
 
 class feeCollectionSystem {
-   
+	+ feesToPay: Fee
+	+ modeOfPayment: enum
+	
+	+ payFees()
+	+ changeModeOfPayment()
+	+ cancelPayment()
 }
 
 class feeFineSystem {
