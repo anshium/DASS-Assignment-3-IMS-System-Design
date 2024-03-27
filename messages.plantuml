@@ -1,15 +1,23 @@
 @startuml messages
 
-class User {
-
-}
-
 class Message {
     + messageID: int
     + sender_ID: int
     + recipient_IDs: list<int>
     + message Content: string
     + timestamp: date
+	+ isBroadcast: bool
+	+ isDraft
+	+ isDeleted
+
+	+ modifyMessage()
+	+ add_recipient(_)
+	+ remove_recipient(_)
+	+ sendMessage()
+	+ scheduleMessage()
+	+ sendToDraft()
+	+ deleteMessage() 
+	' ID remains, the message content gets deleted and can't be edited, ID is also forgotten'
 }
 
 class CommunicationRecordingSystem {
@@ -22,9 +30,14 @@ class CommunicationRecordingSystem {
 }
 
 class Broadcaster {
-    + Message_ID: string
-	+ Sender_ID: int
-	+ receipient_group_ids: list<int>
+    + message_ID: int
+	+ recipient_group_ids: list<int>
 
+	+ attachMessageToBroadcast()
+	+ broadcastAttachedMessage()
+	+ removeFromBroadcast()
+	+ add_recipient_group()
+	+ remove_recipient_group()
+	+ list_available_recipient_groups()
 }
 @enduml
