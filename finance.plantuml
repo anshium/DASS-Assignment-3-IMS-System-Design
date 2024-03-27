@@ -1,0 +1,140 @@
+@startuml manage_users
+
+class Fee {
+	- feeId: int
+	- amount: double
+	- dueDate: Date
+	- isPaid: boolean
+	+ getFeeId(): int
+	+ getAmount(): double
+	+ getDueDate(): Date
+	+ isPaid(): boolean
+	+ markAsPaid(): void
+}
+
+class FeeCategory {
+	- categoryId: int
+	- categoryName: string
+	- description: string
+	+ getCategoryId(): int
+	+ getCategoryName(): string
+	+ getDescription(): string
+}
+
+class feeClassificationSystem {
+	- feeCategories: List<FeeCategory>
+	+ addFeeCategory(category: FeeCategory): void
+	+ removeFeeCategory(categoryId: int): void
+	+ classifyFee(fee: Fee): FeeCategory
+}
+
+class feeCollectionDateDesigningSystem {
+	- collectionDates: Map<string, Date>
+	+ setCollectionDate(collectionType: string, date: Date): void
+	+ getCollectionDate(collectionType: string): Date
+}
+
+class feeCollectionSystem {
+   
+}
+
+class feeFineSystem {
+    + fineRate: float
+	- defaulters : List<Users>
+	- totalDefaulters: float
+    - totalFinesCollected: float
+    
+	+ addDefaulter()
+	+ removeDefaulter()
+    + updateFineRate(newFineRate: float): void
+    + calculateFine(amount: float): float
+    + recordFinePayment(amountPaid: float): void
+    + getTotalFinesCollected(): float
+}
+
+class donationSystem {
+	- donations: List<Donation>
+	+ addDonation(donation: Donation): void
+	+ removeDonation(donationId: int): void
+	+ listDonations(): List<Donation>
+	+ getTotalDonations(): double
+}
+
+class Donation {
+	- donationId: int
+	- donorName: string
+	- amount: double
+	- donationDate: Date
+	+ getDonationId(): int
+	+ getDonorName(): string
+	+ getAmount(): double
+	+ getDonationDate(): Date
+}
+
+class assetAndLiabilitiesSystem {
+	- assets: List<Asset>
+	- liabilities: List<Liability>
+	+ addAsset(asset: Asset): void
+	+ addLiability(liability: Liability): void
+	+ calculateNetWorth(): double
+}
+
+class Asset {
+	- assetId: int
+	- assetName: string
+	- assetValue: double
+	+ getAssetId(): int
+	+ getAssetName(): string
+	+ getAssetValue(): double
+}
+
+class Liability {
+	- liabilityId: int
+	- liabilityName: string
+	- liabilityAmount: double
+	+ getLiabilityId(): int
+	+ getLiabilityName(): string
+	+ getLiabilityAmount(): double
+}
+
+class feeReportGenerationSystem {
+  	- generatedReports: List<Report>
+	'Should the reports go to the database, or should they rest with the system?: Can do that it goes to the cache and everytime the generatedReports is invoked, it fetches the data into this variable'
+
+	+ generateFeeReport(startDate: Date, endDate: Date): void
+	+ viewGeneratedReports(): List<Report>
+}
+
+class expenseAndIncomesManagementSystem {
+	- expenses: List<Expense>
+	- incomes: List<Income>
+	+ addExpense(expense: Expense): void
+	+ addIncome(income: Income): void
+	+ calculateBalance(): double
+}
+
+class Expense {
+	- expenseId: int
+	- amount: double
+	- description: string
+	- expenseDate: Date
+
+	+ getExpenseId(): int
+	+ getAmount(): double
+	+ getDescription(): string
+	+ getExpenseDate(): Date
+}
+
+class Income {
+	- incomeId: int
+	- amount: double
+	- description: string
+	- incomeDate: Date
+
+	+ getIncomeId(): int
+	+ getAmount(): double
+	+ getDescription(): string
+	+ getIncomeDate(): Date
+}
+
+@enduml
