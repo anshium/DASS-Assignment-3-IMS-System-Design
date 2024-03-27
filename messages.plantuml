@@ -5,25 +5,26 @@ class User {
 }
 
 class Message {
-    + MessageID
-    + Sender
-    + Recipient
-    + Message Content
-    + Timestamp
+    + messageID: int
+    + sender_ID: int
+    + recipient_IDs: list<int>
+    + message Content: string
+    + timestamp: date
 }
 
 class CommunicationRecordingSystem {
-    + MessageIDs<List>
+    + messageIDs: List<int>
 
-	+ GetAllRecordings()
-	+ DeleteAllRecordings(password)
-	+ GetRecording(messageID)
-	+ DeleteRecording(messageID)
+	+ getAllRecordings()
+	+ deleteAllRecordings(password)
+	+ getRecording(messageID)
+	+ deleteRecording(messageID)
 }
 
 class Broadcaster {
-    + Message
+    + Message_ID: string
+	+ Sender_ID: int
+	+ receipient_group_ids: list<int>
 
-	
 }
 @enduml
