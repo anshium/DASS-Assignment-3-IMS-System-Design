@@ -7,44 +7,46 @@ class admissionForm {
 
 	+ updateDetails()
 	+ changeUserName()
+	' See this
+	# updateForm(password)
 }
 
 class User {
-  + id: int
-  + name: string
-  + age: int
+	+ id: int
+	+ name: string
+	+ age: int
 }
 
 class Student extends User{
-  + photo: photo
-  + guardian: guardian
-  + emergencyContact: emergencyContact
-  + previousEducation: previousEducation
+	+ photo: photo
+	+ guardian: guardian
+	+ emergencyContact: emergencyContact
+	+ previousEducation: previousEducation
 
-  + addGuardian(guardian: guardian): void
-  + addEmergencyContact(contact: emergencyContact): void
-  + addPreviousEducation(eduDetails: previousEducation): void
+	+ addGuardian(guardian: guardian): void
+	+ addEmergencyContact(contact: emergencyContact): void
+	+ addPreviousEducation(eduDetails: previousEducation): void
 }
 
 class Photo {
-  + size: int
-  + alt: string
-  + image: bin
-  + dateOfCreation: date
-  + resize(newSize: int): void
-  + updateAltText(newAltText: string): void
-  + changeImage(newImage: bin): void
+	+ size: int
+	+ alt: string
+	+ image: bin
+	+ dateOfCreation: date
+	+ resize(newSize: int): void
+	+ updateAltText(newAltText: string): void
+	+ changeImage(newImage: bin): void
 }
 
 class Guardian {
-  + id: int
-  + name: string
-  + relationship: string
-  + contactNumber: string
+	+ id: int
+	+ name: string
+	+ relationship: string
+	+ contactNumber: string
 
-  + updateName(name: string): int
-  + updateRelationship(relationship: string): int
-  + updateContactNumber(newContact: string): int
+	+ updateName(name: string): int
+	+ updateRelationship(relationship: string): int
+	+ updateContactNumber(newContact: string): int
 }
 
 class EmergencyContact extends guardian{
@@ -55,21 +57,21 @@ class EmergencyContact extends guardian{
 	+ updateDescription(newDesc: string): int
 }
 
-class previousEducation {
-  + schoolName: string
-  + grade: string
-  + year: int
-  
-  + updateSchoolName(schoolName: string): int
-  + updateGrade(newGrade: string): int
-  + updateYear(newYear: int): int
+class PreviousEducation {
+	+ schoolName: string
+	+ grade: string
+	+ year: int
+	
+	+ updateSchoolName(schoolName: string): int
+	+ updateGrade(newGrade: string): int
+	+ updateYear(newYear: int): int
 }
 
-admissionForm -- user
-admissionForm -- student
-student -- photo
-student -- guardian
-student -- emergencyContact
-student -- previousEducation
+admissionForm -- User
+admissionForm -- Student
+Student -- Photo
+Student -- Guardian
+Student -- EmergencyContact
+Student -- PreviousEducation
 
 @enduml
