@@ -1,5 +1,4 @@
-@startuml manage_news
-
+@startuml
 package NewsModule {
     class News {
         - id: int
@@ -7,11 +6,11 @@ package NewsModule {
         - content: string
         - date: string
         - comments: List<Comment>
-        + readNews(id)
-        + updateNews(id, title, content, date)
-        + updateNews(id, content, date)
-        + deleteNews(title)
-        + createNews(title, content, date)
+        + readNews(id: int): void
+        + updateNews(id: int, title: string, content: string, date: string): void
+        + updateNews(id: int, content: string, date: string): void
+        + deleteNews(title: string): void
+        + createNews(title: string, content: string, date: string): void
     }
 
     class Comment {
@@ -20,9 +19,19 @@ package NewsModule {
         - date: string
         - author: string
         - status: string
-        + addComment(content, author, date, id)
-        + deleteComment(id)
+        + addComment(content: string, author: string, date: string, id: int): void
+        + deleteComment(id: int): void
     }
-}
 
+    News "1" o-- "0..*" Comment : "Has Comments"
+
+    class ArchivedNews {
+        - archiveId: int
+        - newsId: int
+        + archiveNews(newsId: int): void
+        + unarchiveNews(newsId: int): void
+    }
+
+    News <|-- ArchivedNews : "Archived News"
+}
 @enduml
