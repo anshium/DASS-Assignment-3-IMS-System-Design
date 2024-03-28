@@ -12,6 +12,10 @@ class UserInterface {
     + setTheme(theme: string): void
     + getTheme(): string
     + displayMessage(message: string): void
+	+ goToAdmissions()
+	+ goToExaminations()
+	+ goToAdmissions()
+	+ goToAdmissions()
 }
 
 class User {
