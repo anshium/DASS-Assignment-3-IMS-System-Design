@@ -5,6 +5,8 @@ package FinanceModule {
 		- amount: double
 		- dueDate: Date
 		- isPaid: boolean
+		- category: FeeCategory
+
 		+ getFeeId(): int
 		+ getAmount(): double
 		+ getDueDate(): Date
@@ -141,6 +143,20 @@ package FinanceModule {
 		+ getDescription(): string
 		+ getIncomeDate(): Date
 	}
+
+	expenseAndIncomesManagementSystem -- Income
+	expenseAndIncomesManagementSystem -- Expense
+	feeCollectionSystem -- Fee
+	Fee -- FeeCategory
+	donationSystem -- Donation
+	assetAndLiabilitiesSystem -- Asset
+	assetAndLiabilitiesSystem -- Liability
+	feeFineSystem -- Fee
+	feeCollectionDateDesigningSystem -- feeCollectionSystem
+	feeClassificationSystem - Fee
+	feeReportGenerationSystem -- Fee
+	feeReportGenerationSystem -- feeFineSystem
+
 }
 
 @enduml
