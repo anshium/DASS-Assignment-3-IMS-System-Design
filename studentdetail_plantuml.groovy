@@ -1,5 +1,4 @@
 @startuml
-
 class StudentManager {
     - students: list<Student>
     + addStudent(name: string, batch: string, additionalDetails: string): void
@@ -23,7 +22,6 @@ class Student {
     - additionalDetails: string
 }
 
-StudentManager "1" --> "0..*" Student : Manages
-StudentSearch ..> Student : Uses
-
+StudentManager "1" -- "0..*" Student : Manages
+StudentSearch "1" o--> "0..*" Student : Uses
 @enduml
