@@ -8,7 +8,7 @@ class DashboardSearchBar {
 }
 
 class UserInterface {
-    - theme: string
+    - theme: Theme
     + setTheme(theme: string): void
     + getTheme(): string
     + displayMessage(message: string): void
@@ -18,11 +18,32 @@ class UserInterface {
 	+ goToAdmissions()
 }
 
+class Theme {
+    - colorScheme: string
+    - fontSize: int
+    - backgroundImage: string
+
+    + setColorScheme(colorScheme: string): void
+    + setFontSize(fontSize: int): void
+    + setBackgroundImage(imagePath: string): void
+    + getColorScheme(): string
+    + getFontSize(): int
+    + getBackgroundImage(): string
+}
+
 class User {
     - username: string
     - password: string
     + login(username: string, password: string): boolean
     + logout(): void
+}
+
+class DashboardNewsDisplay {
+	news: string
+
+	+ getNews()
+	+ updateNews()
+	+ removeNews()
 }
 
 class InstituteKiosk {
