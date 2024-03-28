@@ -1,8 +1,8 @@
 @startuml timetable
 
 class TimetableCreator {
-    + name
-    + email
+    + timetables: List<Timetable>
+
     + createTimetable(name, email)
 }
 
@@ -10,7 +10,9 @@ class AlertSystem {
     + subjectLimits
     + threshold: 
 	'(Maximum number of subjects per week)'
+	
     + createAlert(subjectLimits)
+	+ editThreshold()
     + editAlert(subjectLimits)
     + deleteAlert()
     + verifyAlert(user)
@@ -23,7 +25,9 @@ class Timetable {
     + subject
     + teacher
     + classroom
-    + subjectLimits
+    + subjectLimits: int
+	+ theme: enum
+
     + editTimetableEntry(date, time, day, subject, teacher, classroom)
     + deleteTimetableEntry()
 }

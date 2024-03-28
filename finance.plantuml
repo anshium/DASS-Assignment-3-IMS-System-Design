@@ -1,4 +1,4 @@
-@startuml manage_users
+@startuml finance
 
 class Fee {
 	- feeId: int

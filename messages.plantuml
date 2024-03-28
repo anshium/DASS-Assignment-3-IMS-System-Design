@@ -7,8 +7,8 @@ class Message {
     + message Content: string
     + timestamp: date
 	+ isBroadcast: bool
-	+ isDraft
-	+ isDeleted
+	+ isDraft: bool
+	+ isDeleted: bool
 
 	+ modifyMessage()
 	+ add_recipient(_)

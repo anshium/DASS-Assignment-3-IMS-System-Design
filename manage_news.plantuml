@@ -1,4 +1,5 @@
 @startuml manage_news
+
 class News {
     - id: int
     - title: string

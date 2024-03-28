@@ -6,17 +6,19 @@ class SearchSystem {
 
    + addSearchQuery()
    + updateSearchQuery()
+   + viewProfileBasedOnRoles(List<role>)
    + search()
 }
 
 class UserManager {
-	+ roles: list<string>
-	+ priviledge: list<string>
+	+ roles: list<enum>
+	+ priviledge: list<enum>
 	
 	+ viewAllRoles()
 	+ viewAllPriviledges()
 	+ addNewRole()
-	+ removeRoll(role)
+	+ removeRole(role)
+	+ updatePassword(User)
 	+ addNewPriviledge(priviledge)
 	+ removePriviledges(priviledge)
 	+ editUser(userID)
