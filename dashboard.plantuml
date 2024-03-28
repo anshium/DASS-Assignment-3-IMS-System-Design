@@ -54,35 +54,103 @@ class InstituteKiosk {
 }
 
 class SettingsManager {
-    - settings: Map<string, string>
+    - settings: Setting
     + setSetting(key: string, value: string): void
     + getSetting(key: string): string
     + saveSettings(): void
 }
 
+' Setting is a class for ease of storing multiple settings
+
+class Setting {
+	+ language: enum
+	+ country: enum
+	+ currency: enum
+	+ time_zone: enum
+
+	+ setLanguage()
+	+ updateLanguage()
+	+ setCountry()
+	+ updateCountry()
+	+ setCurrency()
+	+ updateCurrency()
+	+ setTimeZone()
+	+ updateTimeZone()
+}
+
+class AdminSetting extends Setting {
+	+ gradingSystemState
+	+ uniqueIDState
+
+	+ enableGradingSystem()
+	+ enableAutomaticUniqueIDs()
+}
+
 class CourseManager {
-    - courses: Course[]
+    - courses: List<Course>
+
     + addCourse(course: Course): void
     + removeCourse(courseId: string): void
     + updateCourse(courseId: string, newDetails: CourseDetails): void
 }
 
+class Course {
+	+ id: int
+	+ name: string
+	+ credits: int
+	+ type: enum
+	+ strength: int
+
+	+ updateCourseName()
+	+ updateCourseCredits()
+	+ updateCourseType()
+	+ updateCourseStrength()
+}
+
+class Elective extends Course {
+	+ max_strength
+
+	+ updateMaxStrength()
+}
+
 class BatchManager {
-    - batches: Batch[]
+    - batches: List<Batch>
     + addBatch(batch: Batch): void
     + removeBatch(batchId: string): void
     + updateBatch(batchId: string, newDetails: BatchDetails): void
 }
 
+class Batch {
+	+ id: int
+	+ name: string
+	+ strength: int
+	+ isGraduated: bool
+
+	+ getBatchID()
+	+ updateBatchName()
+	+ updateBatchStrength()
+	+ changeGraduationStatus()
+}
+
 class SMS_Module {
-    - phoneNumber: string
+    - phoneNumber: int
+	- message: string
+	- isActivated: bool
+	- recipientPhoneNumbers: List<int>
+
+	+ activateSMS_Module()
     + setPhoneNumber(number: string): void
     + getPhoneNumber(): string
     + sendSMS(message: string): void
+	+ addRecipientPhoneNumber(phoneNumber: int)
+	+ removeRecipientPhoneNumber(phoneNumber: int)
+	+ scheduleSMS()
 }
 
+' To see
 class StudentManager {
     - students: Student[]
+
     + addStudent(student: Student): void
     + removeStudent(studentId: string): void
     + updateStudent(studentId: string, newDetails: StudentDetails): void
