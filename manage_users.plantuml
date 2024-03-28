@@ -1,4 +1,4 @@
-@startuml
+@startuml manageUsers
 package ManageUsersModule {
     class AdminUser {
         - userID: int

@@ -1,4 +1,4 @@
-@startuml
+@startuml messages
 package MessagesModule {
     class User {
         - userID: int
