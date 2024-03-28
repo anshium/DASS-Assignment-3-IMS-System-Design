@@ -1,0 +1,88 @@
+@startuml employee
+
+class Employee {
+  -employeeId: int
+  -name: String
+  -email: String
+  -position: String
+  -department: String
+  +Employee(employeeId: int, name: String, email: String, position: String, department: String)
+  +getEmployeeId(): int
+  +getName(): String
+  +getEmail(): String
+  +getPosition(): String
+  +getDepartment(): String
+}
+
+class EmployeeAdmissionForm {
+  -formId: int
+  -dateSubmitted: Date
+  -applicant: Employee
+  +EmployeeAdmissionForm(formId: int, dateSubmitted: Date, applicant: Employee)
+  +getFormId(): int
+  +getDateSubmitted(): Date
+  +getApplicant(): Employee
+}
+
+class PayrollManager {
+  -managerId: int
+  -managerName: String
+  +PayrollManager(managerId: int, managerName: String)
+  +getManagerId(): int
+  +getManagerName(): String
+  +generatePayroll(employee: Employee): PayrollForm
+}
+
+class PayrollForm {
+  -formId: int
+  -employee: Employee
+  -payPeriod: Date
+  -netSalary: double
+  +PayrollForm(formId: int, employee: Employee, payPeriod: Date, netSalary: double)
+  +getFormId(): int
+  +getEmployee(): Employee
+  +getPayPeriod(): Date
+  +getNetSalary(): double
+}
+
+class LMS {
+  -lmsId: int
+  -name: String
+  +LMS(lmsId: int, name: String)
+  +getLmsId(): int
+  +getName(): String
+  +searchCourses(keyword: String): List<Course>
+}
+
+class PayslipApprovalSystem {
+  -systemId: int
+  -authenticatedUser: Employee
+  +PayslipApprovalSystem(systemId: int, authenticatedUser: Employee)
+  +approvePayslip(payslip: PayrollForm)
+  +rejectPayslip(payslip: PayrollForm)
+}
+
+class SearchSystem {
+  -searchId: int
+  +SearchSystem(searchId: int)
+  +search(keyword: String): List<Object>
+}
+
+class Admin {
+  <<singleton>>
+  -adminId: int
+  -adminName: String
+  +getInstance(): Admin
+  +getAdminId(): int
+  +getAdminName(): String
+}
+
+Employee "1" --o "1" EmployeeAdmissionForm : fills out
+PayrollManager "1" --o "*" PayrollForm : generates
+Employee "1" --o "*" PayrollForm : has
+LMS "1" --o "*" Course : includes
+PayslipApprovalSystem "1" --o "1" Employee : authenticates
+SearchSystem "1" --o "*" Object : searches
+Admin "1" -- "1" Employee : is an instance of
+
+@enduml

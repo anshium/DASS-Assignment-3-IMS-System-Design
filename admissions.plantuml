@@ -1,4 +1,4 @@
-@startuml
+@startuml admissions
 class admissionForm {
   + admissionId: int
   + formFields: Map<string, string>
@@ -29,6 +29,9 @@ class photo {
   + alt: string
   + image: bin
   + dateOfCreation: date
+  + resize(newSize: int): void
+  + updateAltText(newAltText: string): void
+  + changeImage(newImage: bin): void
 }
 
 class guardian {
@@ -36,18 +39,26 @@ class guardian {
   + name: string
   + relationship: string
   + contactNumber: string
+  + updateName(name: string): int
+  + updateRelationship(relationship: string): int
+  + updateContactNumber(newContact: string): int
 }
 
-class emergencyContact {
-  + name: string
-  + relationship: string
-  + contactNumber: string
+class emergencyContact extends guardian{
+	+ description: string
+	+ contactNumber: string
+
+	+ updateContactNumber(newContact: string): int
+	+ updateDescription(newDesc: string): int
 }
 
 class previousEducation {
   + schoolName: string
   + grade: string
   + year: int
+  + updateSchoolName(schoolName: string): int
+  + updateGrade(newGrade: string): int
+  + updateYear(newYear: int): int
 }
 
 admissionForm -- user
