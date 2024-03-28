@@ -1,32 +1,43 @@
-@startuml manage_users
-
+@startuml
 package ManageUsersModule {
-	class SearchSystem {
-		+ searchQuery: string
-		+ searchResults: List<User>
+    class AdminUser {
+        - userID: int
+        - name: string
+    }
+    class User {
+        - userID: int
+        - name: string
+    }
 
-		+ addSearchQuery()
-		+ updateSearchQuery()
-		+ viewProfileBasedOnRoles(List<role>)
-		+ search()
-	}
+    class SearchSystem {
+        + searchQuery: string
+        + searchResults: List<User>
 
-	class UserManager {
-		+ roles: list<enum>
-		+ priviledge: list<enum>
-		
-		+ viewAllRoles()
-		+ viewAllPriviledges()
-		+ addNewRole()
-		+ removeRole(role)
-		+ updatePassword(User)
-		+ addNewPriviledge(priviledge)
-		+ removePriviledges(priviledge)
-		+ editUser(userID)
-		+ updateRole(userID, role)
-		+ updatePrivileges(userID, privilege)
-		'Set Standards'
+        + addSearchQuery(query: string): void
+        + updateSearchQuery(query: string): void
+        + viewProfileBasedOnRoles(roles: List<role>): void
+        + search(): void
+    }
 
-	}
+    class UserManager {
+        + roles: List<enum>
+        + privileges: List<enum>
+        
+        + viewAllRoles(): void
+        + viewAllPrivileges(): void
+        + addNewRole(role: enum): void
+        + removeRole(role: enum): void
+        + updatePassword(user: User): void
+        + addNewPrivilege(privilege: enum): void
+        + removePrivileges(privilege: enum): void
+        + editUser(userID: int): void
+        + updateRole(userID: int, role: enum): void
+        + updatePrivileges(userID: int, privilege: enum): void
+        + setStandards(): void
+    }
+
+    User "1" -- "0..*" SearchSystem : "Uses for searching"
+    AdminUser "1" -- "0..*" SearchSystem : "Uses for searching"
+    AdminUser "1..*" -- "0..*" UserManager : "Manages"
 }
 @enduml
