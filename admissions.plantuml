@@ -1,0 +1,44 @@
+@startuml admissions
+
+class AdmissionForm {
+    - formId: int
+    - formStatus: string
+    - submissionDate: date
+    + submitForm(): void
+    + reviewForm(): void
+    + updateFormStatus(status: string): void
+}
+
+class User {
+    - userId: int
+    - username: string
+    - age: int
+    + email: string
+    + address: string
+    + phoneNumber: string
+    + registerUser(): void
+    + updateUserDetails(): void
+    + deleteUserAccount(): void
+}
+
+class Student extends User {
+    - studentId: int
+    - gradeLevel: string
+    - enrolledCourses: Course[]
+    + enrollInCourse(course: Course): void
+    + viewTranscript(): Transcript
+    + applyForScholarship(): void
+}
+
+class Photo {
+    - photoId: int
+    - size: int
+    - altText: string
+    - imageData: byte[]
+    - dateOfCreation: date
+    + uploadPhoto(imageData: byte[]): void
+    + updateAltText(newAltText: string): void
+    + resizePhoto(newSize: int): void
+}
+
+@enduml
