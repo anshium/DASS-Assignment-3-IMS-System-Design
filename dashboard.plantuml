@@ -1,0 +1,75 @@
+@startuml dashboard
+
+class DashboardSearchBar {
+    - searchQuery: string
+    + setSearchQuery(query: string): void
+    + getSearchQuery(): string
+    + search(): void
+}
+
+class UserInterface {
+    - theme: string
+    + setTheme(theme: string): void
+    + getTheme(): string
+    + displayMessage(message: string): void
+}
+
+class User {
+    - username: string
+    - password: string
+    + login(username: string, password: string): boolean
+    + logout(): void
+}
+
+class InstituteKiosk {
+    - location: string
+    + setLocation(location: string): void
+    + getLocation(): string
+    + displayInformation(info: string): void
+}
+
+class SettingsManager {
+    - settings: Map<string, string>
+    + setSetting(key: string, value: string): void
+    + getSetting(key: string): string
+    + saveSettings(): void
+}
+
+class CourseManager {
+    - courses: Course[]
+    + addCourse(course: Course): void
+    + removeCourse(courseId: string): void
+    + updateCourse(courseId: string, newDetails: CourseDetails): void
+}
+
+class BatchManager {
+    - batches: Batch[]
+    + addBatch(batch: Batch): void
+    + removeBatch(batchId: string): void
+    + updateBatch(batchId: string, newDetails: BatchDetails): void
+}
+
+class SMS_Module {
+    - phoneNumber: string
+    + setPhoneNumber(number: string): void
+    + getPhoneNumber(): string
+    + sendSMS(message: string): void
+}
+
+class StudentManager {
+    - students: Student[]
+    + addStudent(student: Student): void
+    + removeStudent(studentId: string): void
+    + updateStudent(studentId: string, newDetails: StudentDetails): void
+	'Student categories need to be added'
+}
+
+' DashboardSearchBar -- UserInterface
+' UserInterface -- User
+' User -- InstituteKiosk
+' SettingsManager -- UserInterface
+' CourseManager -- BatchManager
+' SMS_Module -- UserInterface
+' StudentManager -- CourseManager
+
+@enduml
