@@ -158,12 +158,15 @@ package DashboardModule {
 		'Student categories need to be added'
 	}
 
-	' DashboardSearchBar -- UserInterface
-	' UserInterface -- User
-	' User -- InstituteKiosk
-	' SettingsManager -- UserInterface
-	' CourseManager -- BatchManager
-	' SMS_Module -- UserInterface
-	' StudentManager -- CourseManager
+	DashboardSearchBar -- UserInterface
+	UserInterface -- User
+	UserInterface -- InstituteKiosk
+	SettingsManager -- UserInterface
+	CourseManager -- BatchManager
+	SMS_Module -- UserInterface
+	StudentManager -- CourseManager
+	BatchManager -- Batch
+	UserInterface -- Theme
+	UserInterface -- DashboardNewsDisplay
 }
 @enduml
