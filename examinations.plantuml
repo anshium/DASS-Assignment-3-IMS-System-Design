@@ -7,7 +7,19 @@ class ExaminationSystem {
 }
 
 class Exam {
+	+ id: int
+	+ name: string
+	' Use the course class
+	+ course: Course
+	+ duration: time
+	+ type: enum
+	+ maximum_marks: int
 
+	+ updateName()
+	+ updateCourse()
+	+ updateDuration()
+	+ updateType()
+	+ updateMaximumMarks(newMarks: int)
 }
 
 class ReportSystem {

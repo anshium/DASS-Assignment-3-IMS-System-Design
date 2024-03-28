@@ -18,10 +18,10 @@ class User {
 }
 
 class Student extends User{
-	+ photo: photo
-	+ guardian: guardian
-	+ emergencyContact: emergencyContact
-	+ previousEducation: previousEducation
+	+ photo: Photo
+	+ guardian: Guardian
+	+ emergencyContact: EmergencyContact
+	+ previousEducation: PreviousEducation
 
 	+ addGuardian(guardian: guardian): void
 	+ addEmergencyContact(contact: emergencyContact): void
