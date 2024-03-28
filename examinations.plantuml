@@ -23,20 +23,34 @@ class Exam {
 }
 
 class ReportSystem {
+	+ reports: List<Report>
+
+
 	+ generateReport(exam)
 	+ viewAllReports()
 	+ deleteAllReports()
+	+ renderAllReports()
+	+ renderReport(exam)
 }
 
 class Report {
 	+ Student_ID
+	+ details: Student
+	+ analytics: List<GPA, CCE, CWA>
+	+ reportGenerationDate
+
 	'Would get the details via student ID'
-	+ renderReport(exam)
-	+ renderAllReport()
+	+ renderReport()
 	+ displayStudentDetails()
+	+ generateAnalytics()
+	+ updateReportGenerationDate()
 }
 
 class AnalyticsSystem {
+	+ GPA: float 
+	+ CCE: float
+	+ CWA: List<float>
+
 	+ calculateGPA()
 	+ calculateCCE()
 	+ calculateCWA()
