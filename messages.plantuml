@@ -1,45 +1,52 @@
-@startuml messages
+@startuml
 package MessagesModule {
-	class Message {
-		+ messageID: int
-		+ sender_ID: int
-		+ recipient_IDs: list<int>
-		+ message Content: string
-		+ timestamp: date
-		+ isBroadcast: bool
-		+ isDraft: bool
-		+ isDeleted: bool
+    class User {
+        - userID: int
+        - name: string
+    }
 
-		+ modifyMessage()
-		+ add_recipient(_)
-		+ remove_recipient(_)
-		+ sendMessage()
-		+ scheduleMessage()
-		+ sendToDraft()
-		+ deleteMessage() 
-		' ID remains, the message content gets deleted and can't be edited, ID is also forgotten'
-	}
+    class Message {
+        + messageID: int
+        + sender_ID: int
+        + recipient_IDs: list<int>
+        + messageContent: string
+        + timestamp: date
+        + isBroadcast: bool
+        + isDraft: bool
+        + isDeleted: bool
 
-	class CommunicationRecordingSystem {
-		+ messageIDs: List<int>
+        + modifyMessage()
+        + addRecipient(userID: int)
+        + removeRecipient(userID: int)
+        + sendMessage()
+        + scheduleMessage()
+        + sendToDraft()
+        + deleteMessage()
+    }
 
-		+ getAllRecordings()
-		+ deleteAllRecordings(password)
-		+ getRecording(messageID)
-		+ deleteRecording(messageID)
-	}
+    class CommunicationRecordingSystem {
+        - messageIDs: List<int>
 
-	class Broadcaster {
-		+ message_ID: int
-		+ recipient_group_ids: list<int>
+        + getAllRecordings()
+        + deleteAllRecordings(password: string)
+        + getRecording(messageID: int)
+        + deleteRecording(messageID: int)
+    }
 
-		+ attachMessageToBroadcast()
-		+ broadcastAttachedMessage()
-		+ removeFromBroadcast()
-		+ add_recipient_group()
-		+ remove_recipient_group()
-		+ list_available_recipient_groups()
-	}
+    class Broadcaster {
+        + message_ID: int
+        + recipientGroupIDs: list<int>
 
+        + attachMessageToBroadcast()
+        + broadcastAttachedMessage()
+        + removeFromBroadcast()
+        + addRecipientGroup(groupID: int)
+        + removeRecipientGroup(groupID: int)
+        + listAvailableRecipientGroups()
+    }
+
+    User "1" -- "0..*" Message : "Sends/Receives"
+    User "1" -- "1" CommunicationRecordingSystem : "Manages"
+    User "1" -- "1" Broadcaster : "Uses"
 }
 @enduml
