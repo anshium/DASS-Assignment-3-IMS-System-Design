@@ -1,0 +1,33 @@
+@startuml examinations
+
+class ExaminationSystem {
+	+ examIdList: ids[int]
+	+ groupingParameters: list<string>
+	+ groupExams(grouping_parameter)
+}
+
+class Exam {
+
+}
+
+class ReportSystem {
+	+ generateReport(exam)
+	+ viewAllReports()
+	+ deleteAllReports()
+}
+
+class Report {
+	+ Student_ID
+	'Would get the details via student ID'
+	+ renderReport(exam)
+	+ renderAllReport()
+	+ displayStudentDetails()
+}
+
+class AnalyticsSystem {
+	+ calculateGPA()
+	+ calculateCCE()
+	+ calculateCWA()
+}
+
+@enduml
