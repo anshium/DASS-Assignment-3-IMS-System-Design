@@ -1,44 +1,60 @@
-@startuml admissions
-
-class AdmissionForm {
-    - formId: int
-    - formStatus: string
-    - submissionDate: date
-    + submitForm(): void
-    + reviewForm(): void
-    + updateFormStatus(status: string): void
+@startuml
+class admissionForm {
+  + admissionId: int
+  + formFields: Map<string, string>
+  + addGuardian(guardian: guardian): void
+  + addEmergencyContact(contact: emergencyContact): void
+  + addPreviousEducation(eduDetails: previousEducation): void
+  + customizeForm(fields: Map<string, string>): void
 }
 
-class User {
-    - userId: int
-    - username: string
-    - age: int
-    + email: string
-    + address: string
-    + phoneNumber: string
-    + registerUser(): void
-    + updateUserDetails(): void
-    + deleteUserAccount(): void
+class user {
+  + id: int
+  + name: string
+  + age: int
 }
 
-class Student extends User {
-    - studentId: int
-    - gradeLevel: string
-    - enrolledCourses: Course[]
-    + enrollInCourse(course: Course): void
-    + viewTranscript(): Transcript
-    + applyForScholarship(): void
+class student {
+  + photo: photo
+  + guardian: guardian
+  + emergencyContact: emergencyContact
+  + previousEducation: previousEducation
+  + addGuardian(guardian: guardian): void
+  + addEmergencyContact(contact: emergencyContact): void
+  + addPreviousEducation(eduDetails: previousEducation): void
 }
 
-class Photo {
-    - photoId: int
-    - size: int
-    - altText: string
-    - imageData: byte[]
-    - dateOfCreation: date
-    + uploadPhoto(imageData: byte[]): void
-    + updateAltText(newAltText: string): void
-    + resizePhoto(newSize: int): void
+class photo {
+  + size: int
+  + alt: string
+  + image: bin
+  + dateOfCreation: date
 }
+
+class guardian {
+  + id: int
+  + name: string
+  + relationship: string
+  + contactNumber: string
+}
+
+class emergencyContact {
+  + name: string
+  + relationship: string
+  + contactNumber: string
+}
+
+class previousEducation {
+  + schoolName: string
+  + grade: string
+  + year: int
+}
+
+admissionForm -- user
+admissionForm -- student
+student -- photo
+student -- guardian
+student -- emergencyContact
+student -- previousEducation
 
 @enduml
