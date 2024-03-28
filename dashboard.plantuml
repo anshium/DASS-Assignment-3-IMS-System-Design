@@ -22,10 +22,10 @@ class User {
 }
 
 class InstituteKiosk {
-    - location: string
-    + setLocation(location: string): void
-    + getLocation(): string
+	- information: string
+	- date: date
     + displayInformation(info: string): void
+	+ updateDate()
 }
 
 class SettingsManager {
