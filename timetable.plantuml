@@ -1,35 +1,48 @@
-@startuml timetable
+@startuml
 package TimetableModule {
-	class TimetableCreator {
-		+ timetables: List<Timetable>
+    abstract class User {
+        - name: string
+        - email: string
+    }
 
-		+ createTimetable(name, email)
-	}
+    class Employee {
+        + setSubjectLimit(limit: int)
+        + getEmail(): string
+    }
 
-	class AlertSystem {
-		+ subjectLimits
-		+ threshold: 
-		'(Maximum number of subjects per week)'
-		
-		+ createAlert(subjectLimits)
-		+ editThreshold()
-		+ editAlert(subjectLimits)
-		+ deleteAlert()
-		+ verifyAlert(user)
-	}
+    class TimetableCreator {
+        - timetables: List<Timetable>
+        + createTimetable(name, email)
+        + createTimetableInAdvance(date, time, day, subject, teacher, classroom)
+        + editTimetableEntry(date, time, day, subject, teacher, classroom)
+        + deleteTimetableEntry()
+        + alertOnEmployeeSubjectLimits(employee: Employee)
+    }
 
-	class Timetable {
-		+ date
-		+ time
-		+ day
-		+ subject
-		+ teacher
-		+ classroom
-		+ subjectLimits: int
-		+ theme: enum
+    class AlertSystem {
+        - subjectLimits: Map<Employee, int>
+        - threshold: int
+        + createAlert(subjectLimits)
+        + editThreshold()
+        + editAlert(subjectLimits)
+        + deleteAlert()
+        + verifyAlert(user)
+    }
 
-		+ editTimetableEntry(date, time, day, subject, teacher, classroom)
-		+ deleteTimetableEntry()
-	}
+    class Timetable {
+        - date
+        - time
+        - day
+        - subject
+        - teacher
+        - classroom
+        - subjectLimits: int
+        - theme: enum
+    }
+
+    TimetableCreator "1" -- "0..*" Timetable : creates
+    TimetableCreator --|> User : generalizes
+    TimetableCreator o-- AlertSystem : alerts
+    AlertSystem "1" -- "0..*" Employee : has
 }
 @enduml
