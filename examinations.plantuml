@@ -1,59 +1,59 @@
 @startuml examinations
+package ExaminationsModule {
+	class ExaminationSystem {
+		+ examIdList: ids[int]
+		+ groupingParameters: list<string>
+		+ groupExams(grouping_parameter)
+	}
 
-class ExaminationSystem {
-	+ examIdList: ids[int]
-	+ groupingParameters: list<string>
-	+ groupExams(grouping_parameter)
+	class Exam {
+		+ id: int
+		+ name: string
+		' Use the course class
+		+ course: Course
+		+ duration: time
+		+ type: enum
+		+ maximum_marks: int
+
+		+ updateName()
+		+ updateCourse()
+		+ updateDuration()
+		+ updateType()
+		+ updateMaximumMarks(newMarks: int)
+	}
+
+	class ReportSystem {
+		+ reports: List<Report>
+
+
+		+ generateReport(exam)
+		+ viewAllReports()
+		+ deleteAllReports()
+		+ renderAllReports()
+		+ renderReport(exam)
+	}
+
+	class Report {
+		+ Student_ID
+		+ details: Student
+		+ analytics: List<GPA, CCE, CWA>
+		+ reportGenerationDate
+
+		'Would get the details via student ID'
+		+ renderReport()
+		+ displayStudentDetails()
+		+ generateAnalytics()
+		+ updateReportGenerationDate()
+	}
+
+	class AnalyticsSystem {
+		+ GPA: float 
+		+ CCE: float
+		+ CWA: List<float>
+
+		+ calculateGPA()
+		+ calculateCCE()
+		+ calculateCWA()
+	}
 }
-
-class Exam {
-	+ id: int
-	+ name: string
-	' Use the course class
-	+ course: Course
-	+ duration: time
-	+ type: enum
-	+ maximum_marks: int
-
-	+ updateName()
-	+ updateCourse()
-	+ updateDuration()
-	+ updateType()
-	+ updateMaximumMarks(newMarks: int)
-}
-
-class ReportSystem {
-	+ reports: List<Report>
-
-
-	+ generateReport(exam)
-	+ viewAllReports()
-	+ deleteAllReports()
-	+ renderAllReports()
-	+ renderReport(exam)
-}
-
-class Report {
-	+ Student_ID
-	+ details: Student
-	+ analytics: List<GPA, CCE, CWA>
-	+ reportGenerationDate
-
-	'Would get the details via student ID'
-	+ renderReport()
-	+ displayStudentDetails()
-	+ generateAnalytics()
-	+ updateReportGenerationDate()
-}
-
-class AnalyticsSystem {
-	+ GPA: float 
-	+ CCE: float
-	+ CWA: List<float>
-
-	+ calculateGPA()
-	+ calculateCCE()
-	+ calculateCWA()
-}
-
 @enduml

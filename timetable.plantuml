@@ -1,35 +1,35 @@
 @startuml timetable
+package TimetableModule {
+	class TimetableCreator {
+		+ timetables: List<Timetable>
 
-class TimetableCreator {
-    + timetables: List<Timetable>
+		+ createTimetable(name, email)
+	}
 
-    + createTimetable(name, email)
+	class AlertSystem {
+		+ subjectLimits
+		+ threshold: 
+		'(Maximum number of subjects per week)'
+		
+		+ createAlert(subjectLimits)
+		+ editThreshold()
+		+ editAlert(subjectLimits)
+		+ deleteAlert()
+		+ verifyAlert(user)
+	}
+
+	class Timetable {
+		+ date
+		+ time
+		+ day
+		+ subject
+		+ teacher
+		+ classroom
+		+ subjectLimits: int
+		+ theme: enum
+
+		+ editTimetableEntry(date, time, day, subject, teacher, classroom)
+		+ deleteTimetableEntry()
+	}
 }
-
-class AlertSystem {
-    + subjectLimits
-    + threshold: 
-	'(Maximum number of subjects per week)'
-	
-    + createAlert(subjectLimits)
-	+ editThreshold()
-    + editAlert(subjectLimits)
-    + deleteAlert()
-    + verifyAlert(user)
-}
-
-class Timetable {
-    + date
-    + time
-    + day
-    + subject
-    + teacher
-    + classroom
-    + subjectLimits: int
-	+ theme: enum
-
-    + editTimetableEntry(date, time, day, subject, teacher, classroom)
-    + deleteTimetableEntry()
-}
-
 @enduml

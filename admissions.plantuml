@@ -1,77 +1,77 @@
 @startuml admissions
+package AdmissionsModule {
+	class admissionForm {
+		+ admissionId: int
+		+ username
+		+ details: Student
 
-class admissionForm {
-	+ admissionId: int
-	+ username
-	+ details: Student
+		+ updateDetails()
+		+ changeUserName()
+		' See this
+		# updateForm(password)
+	}
 
-	+ updateDetails()
-	+ changeUserName()
-	' See this
-	# updateForm(password)
+	class User {
+		+ id: int
+		+ name: string
+		+ age: int
+	}
+
+	class Student extends User{
+		+ photo: Photo
+		+ guardian: Guardian
+		+ emergencyContact: EmergencyContact
+		+ previousEducation: PreviousEducation
+
+		+ addGuardian(guardian: guardian): void
+		+ addEmergencyContact(contact: emergencyContact): void
+		+ addPreviousEducation(eduDetails: previousEducation): void
+	}
+
+	class Photo {
+		+ size: int
+		+ alt: string
+		+ image: bin
+		+ dateOfCreation: date
+		+ resize(newSize: int): void
+		+ updateAltText(newAltText: string): void
+		+ changeImage(newImage: bin): void
+	}
+
+	class Guardian {
+		+ id: int
+		+ name: string
+		+ relationship: string
+		+ contactNumber: string
+
+		+ updateName(name: string): int
+		+ updateRelationship(relationship: string): int
+		+ updateContactNumber(newContact: string): int
+	}
+
+	class EmergencyContact extends guardian{
+		+ description: string
+		+ contactNumber: string
+
+		+ updateContactNumber(newContact: string): int
+		+ updateDescription(newDesc: string): int
+	}
+
+	class PreviousEducation {
+		+ schoolName: string
+		+ grade: string
+		+ year: int
+		
+		+ updateSchoolName(schoolName: string): int
+		+ updateGrade(newGrade: string): int
+		+ updateYear(newYear: int): int
+	}
+
+	admissionForm -- User
+	admissionForm -- Student
+	Student -- Photo
+	Student -- Guardian
+	Student -- EmergencyContact
+	Student -- PreviousEducation
 }
-
-class User {
-	+ id: int
-	+ name: string
-	+ age: int
-}
-
-class Student extends User{
-	+ photo: Photo
-	+ guardian: Guardian
-	+ emergencyContact: EmergencyContact
-	+ previousEducation: PreviousEducation
-
-	+ addGuardian(guardian: guardian): void
-	+ addEmergencyContact(contact: emergencyContact): void
-	+ addPreviousEducation(eduDetails: previousEducation): void
-}
-
-class Photo {
-	+ size: int
-	+ alt: string
-	+ image: bin
-	+ dateOfCreation: date
-	+ resize(newSize: int): void
-	+ updateAltText(newAltText: string): void
-	+ changeImage(newImage: bin): void
-}
-
-class Guardian {
-	+ id: int
-	+ name: string
-	+ relationship: string
-	+ contactNumber: string
-
-	+ updateName(name: string): int
-	+ updateRelationship(relationship: string): int
-	+ updateContactNumber(newContact: string): int
-}
-
-class EmergencyContact extends guardian{
-	+ description: string
-	+ contactNumber: string
-
-	+ updateContactNumber(newContact: string): int
-	+ updateDescription(newDesc: string): int
-}
-
-class PreviousEducation {
-	+ schoolName: string
-	+ grade: string
-	+ year: int
-	
-	+ updateSchoolName(schoolName: string): int
-	+ updateGrade(newGrade: string): int
-	+ updateYear(newYear: int): int
-}
-
-admissionForm -- User
-admissionForm -- Student
-Student -- Photo
-Student -- Guardian
-Student -- EmergencyContact
-Student -- PreviousEducation
-
 @enduml

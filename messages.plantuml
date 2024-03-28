@@ -1,43 +1,45 @@
 @startuml messages
+package MessagesModule {
+	class Message {
+		+ messageID: int
+		+ sender_ID: int
+		+ recipient_IDs: list<int>
+		+ message Content: string
+		+ timestamp: date
+		+ isBroadcast: bool
+		+ isDraft: bool
+		+ isDeleted: bool
 
-class Message {
-    + messageID: int
-    + sender_ID: int
-    + recipient_IDs: list<int>
-    + message Content: string
-    + timestamp: date
-	+ isBroadcast: bool
-	+ isDraft: bool
-	+ isDeleted: bool
+		+ modifyMessage()
+		+ add_recipient(_)
+		+ remove_recipient(_)
+		+ sendMessage()
+		+ scheduleMessage()
+		+ sendToDraft()
+		+ deleteMessage() 
+		' ID remains, the message content gets deleted and can't be edited, ID is also forgotten'
+	}
 
-	+ modifyMessage()
-	+ add_recipient(_)
-	+ remove_recipient(_)
-	+ sendMessage()
-	+ scheduleMessage()
-	+ sendToDraft()
-	+ deleteMessage() 
-	' ID remains, the message content gets deleted and can't be edited, ID is also forgotten'
-}
+	class CommunicationRecordingSystem {
+		+ messageIDs: List<int>
 
-class CommunicationRecordingSystem {
-    + messageIDs: List<int>
+		+ getAllRecordings()
+		+ deleteAllRecordings(password)
+		+ getRecording(messageID)
+		+ deleteRecording(messageID)
+	}
 
-	+ getAllRecordings()
-	+ deleteAllRecordings(password)
-	+ getRecording(messageID)
-	+ deleteRecording(messageID)
-}
+	class Broadcaster {
+		+ message_ID: int
+		+ recipient_group_ids: list<int>
 
-class Broadcaster {
-    + message_ID: int
-	+ recipient_group_ids: list<int>
+		+ attachMessageToBroadcast()
+		+ broadcastAttachedMessage()
+		+ removeFromBroadcast()
+		+ add_recipient_group()
+		+ remove_recipient_group()
+		+ list_available_recipient_groups()
+	}
 
-	+ attachMessageToBroadcast()
-	+ broadcastAttachedMessage()
-	+ removeFromBroadcast()
-	+ add_recipient_group()
-	+ remove_recipient_group()
-	+ list_available_recipient_groups()
 }
 @enduml

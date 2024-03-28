@@ -1,168 +1,169 @@
 @startuml dashboard
 
-class DashboardSearchBar {
-    - searchQuery: string
-    + setSearchQuery(query: string): void
-    + getSearchQuery(): string
-    + search(): void
+package DashboardModule {
+	class DashboardSearchBar {
+		- searchQuery: string
+		+ setSearchQuery(query: string): void
+		+ getSearchQuery(): string
+		+ search(): void
+	}
+
+	class UserInterface {
+		- theme: Theme
+		+ setTheme(theme: string): void
+		+ getTheme(): string
+		+ displayMessage(message: string): void
+		+ goToAdmissions()
+		+ goToExaminations()
+		+ goToAdmissions()
+		+ goToAdmissions()
+	}
+
+	class Theme {
+		- colorScheme: string
+		- fontSize: int
+		- backgroundImage: string
+
+		+ setColorScheme(colorScheme: string): void
+		+ setFontSize(fontSize: int): void
+		+ setBackgroundImage(imagePath: string): void
+		+ getColorScheme(): string
+		+ getFontSize(): int
+		+ getBackgroundImage(): string
+	}
+
+	class User {
+		- username: string
+		- password: string
+		+ login(username: string, password: string): boolean
+		+ logout(): void
+	}
+
+	class DashboardNewsDisplay {
+		news: string
+
+		+ getNews()
+		+ updateNews()
+		+ removeNews()
+	}
+
+	class InstituteKiosk {
+		- information: string
+		- date: date
+		+ displayInformation(info: string): void
+		+ updateDate()
+	}
+
+	class SettingsManager {
+		- settings: Setting
+		+ setSetting(key: string, value: string): void
+		+ getSetting(key: string): string
+		+ saveSettings(): void
+	}
+
+	' Setting is a class for ease of storing multiple settings
+
+	class Setting {
+		+ language: enum
+		+ country: enum
+		+ currency: enum
+		+ time_zone: enum
+
+		+ setLanguage()
+		+ updateLanguage()
+		+ setCountry()
+		+ updateCountry()
+		+ setCurrency()
+		+ updateCurrency()
+		+ setTimeZone()
+		+ updateTimeZone()
+	}
+
+	class AdminSetting extends Setting {
+		+ gradingSystemState
+		+ uniqueIDState
+
+		+ enableGradingSystem()
+		+ enableAutomaticUniqueIDs()
+	}
+
+	class CourseManager {
+		- courses: List<Course>
+
+		+ addCourse(course: Course): void
+		+ removeCourse(courseId: string): void
+		+ updateCourse(courseId: string, newDetails: CourseDetails): void
+	}
+
+	class Course {
+		+ id: int
+		+ name: string
+		+ credits: int
+		+ type: enum
+		+ strength: int
+
+		+ updateCourseName()
+		+ updateCourseCredits()
+		+ updateCourseType()
+		+ updateCourseStrength()
+	}
+
+	class Elective extends Course {
+		+ max_strength
+
+		+ updateMaxStrength()
+	}
+
+	class BatchManager {
+		- batches: List<Batch>
+		+ addBatch(batch: Batch): void
+		+ removeBatch(batchId: string): void
+		+ updateBatch(batchId: string, newDetails: BatchDetails): void
+	}
+
+	class Batch {
+		+ id: int
+		+ name: string
+		+ strength: int
+		+ isGraduated: bool
+
+		+ getBatchID()
+		+ updateBatchName()
+		+ updateBatchStrength()
+		+ changeGraduationStatus()
+	}
+
+	class SMS_Module {
+		- phoneNumber: int
+		- message: string
+		- isActivated: bool
+		- recipientPhoneNumbers: List<int>
+
+		+ activateSMS_Module()
+		+ setPhoneNumber(number: string): void
+		+ getPhoneNumber(): string
+		+ sendSMS(message: string): void
+		+ addRecipientPhoneNumber(phoneNumber: int)
+		+ removeRecipientPhoneNumber(phoneNumber: int)
+		+ scheduleSMS()
+	}
+
+	' To see
+	class StudentManager {
+		- students: Student[]
+
+		+ addStudent(student: Student): void
+		+ removeStudent(studentId: string): void
+		+ updateStudent(studentId: string, newDetails: StudentDetails): void
+		'Student categories need to be added'
+	}
+
+	' DashboardSearchBar -- UserInterface
+	' UserInterface -- User
+	' User -- InstituteKiosk
+	' SettingsManager -- UserInterface
+	' CourseManager -- BatchManager
+	' SMS_Module -- UserInterface
+	' StudentManager -- CourseManager
 }
-
-class UserInterface {
-    - theme: Theme
-    + setTheme(theme: string): void
-    + getTheme(): string
-    + displayMessage(message: string): void
-	+ goToAdmissions()
-	+ goToExaminations()
-	+ goToAdmissions()
-	+ goToAdmissions()
-}
-
-class Theme {
-    - colorScheme: string
-    - fontSize: int
-    - backgroundImage: string
-
-    + setColorScheme(colorScheme: string): void
-    + setFontSize(fontSize: int): void
-    + setBackgroundImage(imagePath: string): void
-    + getColorScheme(): string
-    + getFontSize(): int
-    + getBackgroundImage(): string
-}
-
-class User {
-    - username: string
-    - password: string
-    + login(username: string, password: string): boolean
-    + logout(): void
-}
-
-class DashboardNewsDisplay {
-	news: string
-
-	+ getNews()
-	+ updateNews()
-	+ removeNews()
-}
-
-class InstituteKiosk {
-	- information: string
-	- date: date
-    + displayInformation(info: string): void
-	+ updateDate()
-}
-
-class SettingsManager {
-    - settings: Setting
-    + setSetting(key: string, value: string): void
-    + getSetting(key: string): string
-    + saveSettings(): void
-}
-
-' Setting is a class for ease of storing multiple settings
-
-class Setting {
-	+ language: enum
-	+ country: enum
-	+ currency: enum
-	+ time_zone: enum
-
-	+ setLanguage()
-	+ updateLanguage()
-	+ setCountry()
-	+ updateCountry()
-	+ setCurrency()
-	+ updateCurrency()
-	+ setTimeZone()
-	+ updateTimeZone()
-}
-
-class AdminSetting extends Setting {
-	+ gradingSystemState
-	+ uniqueIDState
-
-	+ enableGradingSystem()
-	+ enableAutomaticUniqueIDs()
-}
-
-class CourseManager {
-    - courses: List<Course>
-
-    + addCourse(course: Course): void
-    + removeCourse(courseId: string): void
-    + updateCourse(courseId: string, newDetails: CourseDetails): void
-}
-
-class Course {
-	+ id: int
-	+ name: string
-	+ credits: int
-	+ type: enum
-	+ strength: int
-
-	+ updateCourseName()
-	+ updateCourseCredits()
-	+ updateCourseType()
-	+ updateCourseStrength()
-}
-
-class Elective extends Course {
-	+ max_strength
-
-	+ updateMaxStrength()
-}
-
-class BatchManager {
-    - batches: List<Batch>
-    + addBatch(batch: Batch): void
-    + removeBatch(batchId: string): void
-    + updateBatch(batchId: string, newDetails: BatchDetails): void
-}
-
-class Batch {
-	+ id: int
-	+ name: string
-	+ strength: int
-	+ isGraduated: bool
-
-	+ getBatchID()
-	+ updateBatchName()
-	+ updateBatchStrength()
-	+ changeGraduationStatus()
-}
-
-class SMS_Module {
-    - phoneNumber: int
-	- message: string
-	- isActivated: bool
-	- recipientPhoneNumbers: List<int>
-
-	+ activateSMS_Module()
-    + setPhoneNumber(number: string): void
-    + getPhoneNumber(): string
-    + sendSMS(message: string): void
-	+ addRecipientPhoneNumber(phoneNumber: int)
-	+ removeRecipientPhoneNumber(phoneNumber: int)
-	+ scheduleSMS()
-}
-
-' To see
-class StudentManager {
-    - students: Student[]
-
-    + addStudent(student: Student): void
-    + removeStudent(studentId: string): void
-    + updateStudent(studentId: string, newDetails: StudentDetails): void
-	'Student categories need to be added'
-}
-
-' DashboardSearchBar -- UserInterface
-' UserInterface -- User
-' User -- InstituteKiosk
-' SettingsManager -- UserInterface
-' CourseManager -- BatchManager
-' SMS_Module -- UserInterface
-' StudentManager -- CourseManager
-
 @enduml

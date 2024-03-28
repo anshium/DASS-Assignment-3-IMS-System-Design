@@ -1,28 +1,29 @@
 @startuml attendance
 
-class AttendanceUpdateSystem {
-    Date: +
-    ClassID: int +
-    Attendance Status List: List<UserId: int, Present/Absent: bool> +
-    Note/Remarks: +
-    markAttendance(date, id, attendance status list, remarks): +
-    updateRemarks(date, id, remarks): +
-}
+package AttendanceModule {
+	class AttendanceUpdateSystem {
+		Date: +
+		ClassID: int +
+		Attendance Status List: List<UserId: int, Present/Absent: bool> +
+		Note/Remarks: +
+		markAttendance(date, id, attendance status list, remarks): +
+		updateRemarks(date, id, remarks): +
+	}
 
-class StandardiseReportConvertor {
-    Report Type: +
-    Conversion Settings: +
-    Converted Report: +
-    convertReport(reportType, conversionSettings): +
-    saveConvertedReport(convertedReport): +
-}
+	class StandardiseReportConvertor {
+		Report Type: +
+		Conversion Settings: +
+		Converted Report: +
+		convertReport(reportType, conversionSettings): +
+		saveConvertedReport(convertedReport): +
+	}
 
-class ReportFilteringSystem {
-    Report Type: +
-    Filters: +
-    Filtered Report: +
-    applyFilters(reportType, filters): +
-    saveFilteredReport(filteredReport): +
+	class ReportFilteringSystem {
+		Report Type: +
+		Filters: +
+		Filtered Report: +
+		applyFilters(reportType, filters): +
+		saveFilteredReport(filteredReport): +
+	}
 }
-
 @enduml

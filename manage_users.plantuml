@@ -1,31 +1,32 @@
 @startuml manage_users
 
-class SearchSystem {
-   + searchQuery: string
-   + searchResults: List<User>
+package ManageUsersModule {
+	class SearchSystem {
+		+ searchQuery: string
+		+ searchResults: List<User>
 
-   + addSearchQuery()
-   + updateSearchQuery()
-   + viewProfileBasedOnRoles(List<role>)
-   + search()
+		+ addSearchQuery()
+		+ updateSearchQuery()
+		+ viewProfileBasedOnRoles(List<role>)
+		+ search()
+	}
+
+	class UserManager {
+		+ roles: list<enum>
+		+ priviledge: list<enum>
+		
+		+ viewAllRoles()
+		+ viewAllPriviledges()
+		+ addNewRole()
+		+ removeRole(role)
+		+ updatePassword(User)
+		+ addNewPriviledge(priviledge)
+		+ removePriviledges(priviledge)
+		+ editUser(userID)
+		+ updateRole(userID, role)
+		+ updatePrivileges(userID, privilege)
+		'Set Standards'
+
+	}
 }
-
-class UserManager {
-	+ roles: list<enum>
-	+ priviledge: list<enum>
-	
-	+ viewAllRoles()
-	+ viewAllPriviledges()
-	+ addNewRole()
-	+ removeRole(role)
-	+ updatePassword(User)
-	+ addNewPriviledge(priviledge)
-	+ removePriviledges(priviledge)
-	+ editUser(userID)
-	+ updateRole(userID, role)
-	+ updatePrivileges(userID, privilege)
-	'Set Standards'
-
-}
-
 @enduml
