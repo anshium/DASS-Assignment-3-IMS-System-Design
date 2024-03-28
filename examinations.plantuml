@@ -55,5 +55,10 @@ package ExaminationsModule {
 		+ calculateCCE()
 		+ calculateCWA()
 	}
+
+	ExaminationSystem -- Exam
+	ReportSystem -- Report
+	ReportSystem -- AnalyticsSystem
+	ReportSystem -- Exam
 }
 @enduml
