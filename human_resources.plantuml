@@ -8,11 +8,14 @@ package HumanResourcesModule {
 		+ email: String
 		+ position: enum
 		+ department: enum
+		+ isAdmin: bool
+		+ onLeave: bool
 
 		+ changeName() 
 		+ changeEmail() 
 		+ changePosition() 
-		+ changeDepartment() 
+		+ changeDepartment()
+		+ updateLeaveStatus(bool): int 
 	}
 
 	class EmployeeAdmissionForm {
@@ -25,11 +28,13 @@ package HumanResourcesModule {
 	}
 
 	class PayrollManager {
-		+ managerId: int
-		+ managerName: String
+		+ payrollForms: List<PayrollForm>
 
-		+ updateManagerName()
 		+ generatePayroll(employee: Employee): PayrollForm
+		+ addPayrollForm(payrollForm: PayrollForm): int
+		+ removePayrollForm(formId: int): int
+		+ viewAllPayrollForms(): int
+		+ viewPayrollForm(formID | employeeID): int
 	}
 
 	class PayrollForm {
@@ -45,10 +50,13 @@ package HumanResourcesModule {
 	}
 
 	class LMS {
-		+ lmsId: int
-		+ name: String
+		+ LeavesAvailable: Map<date, bool>
 		
 		+ updateName()
+		+ addLeave()
+		+ remitLeave()
+		'Only visible to the admin
+		+ approveLeave(password) 
 	}
 
 	class PayslipApprovalSystem {
@@ -63,9 +71,11 @@ package HumanResourcesModule {
 		+ searchQuery: string
 		
 		+ search(keyword: String): List<Object>
+		+ searchEmployee(employeeID: int): int
+		+ searchPayrollForm(formID: int): int
 	}
 
-	class Admin {
+	class Admin extends Employee{
 		- adminId: int
 		- adminName: String
 		+ getInstance(): Admin
@@ -73,13 +83,31 @@ package HumanResourcesModule {
 		+ getAdminName(): String
 	}
 
-	Employee "1" --o "1" EmployeeAdmissionForm : fills out
-	PayrollManager "1" --o "*" PayrollForm : generates
-	Employee "1" --o "*" PayrollForm : has
-	LMS "1" --o "0..*" Employee : uses
-	PayslipApprovalSystem "1" -- "1" Admin : uses
-	Admin "1" -- "1" Employee : is an instance of
+	class EmployeeDatabase {
+		+ employees: List<Employee>
+		+ num_employees: int
+		+ num_admins: int
 
-	SearchSystem "1" -- "0..*" "Employee": searches
+		+ addEmployee(employeeId: int): int
+		+ removeEmployee(employeeId: int): int
+		- updateEmployeeNumber(): int
+		+ setEmployeeAsAdmin(employeeID: int, password: string): int
+		+ removeEmployeeAsAdmin(employeeID: int, password: string): int
+		- updateAdminNumber(): int
+	}
+
+	Admin "1..*" -- "1" PayslipApprovalSystem: approves payslip using
+	Employee "1.." --> "1" LMS: applies leaves on
+	Employee "1..*" --> "1" PayrollForm: fills
+	Admin "1.." --> "1" SearchSystem: searches on
+	SearchSystem "1" --> "1" EmployeeDatabase: uses
+	' Employees can fill the employee admission form, while their position can be an applicant
+	Employee "1..*" --> "1" EmployeeAdmissionForm: fills
+	Admin "1..*" --> "1..*" EmployeeAdmissionForm: can fill on behalf of employee
+	PayrollManager "1" --> "1" EmployeeDatabase: uses
+	PayrollForm "1" --> PayrollManager: interfaces with / stores
+	SearchSystem "1" --> PayrollManager: uses
+	PayslipApprovalSystem "1" --> "1" PayrollManager: interfaces with
+	Admin "1" --> "1" LMS: approves leaves using
 }
 @enduml

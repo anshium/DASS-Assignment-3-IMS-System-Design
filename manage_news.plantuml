@@ -11,6 +11,9 @@ package NewsModule {
         + updateNews(id: int, content: string, date: string): void
         + deleteNews(title: string): void
         + createNews(title: string, content: string, date: string): void
+        
+        + archiveNews(newsId: int): void
+        + unarchiveNews(newsId: int): void
     }
 
     class Comment {
@@ -23,15 +26,59 @@ package NewsModule {
         + deleteComment(id: int): void
     }
 
-    News "1" o-- "0..*" Comment : "Has Comments"
-
-    class ArchivedNews {
+    class ArchivedNews extends News{
         - archiveId: int
-        - newsId: int
-        + archiveNews(newsId: int): void
+        - archivalDate: date
+
+        + updateArchivalDate(newDate: date): int
+        + viewArchivalDate(): date
         + unarchiveNews(newsId: int): void
     }
 
-    News <|-- ArchivedNews : "Archived News"
+    class SearchSystem {
+		+ searchQuery: string
+        + filters: enum
+        + tags: List<string>
+		
+		+ search(keyword: String): List<Object>
+        + applyFilter(filter: enum)
+        + removeFilter(filter: enum)
+        + addTag(tag: string)
+        + removeTag(tag: string)
+        + viewAllNews()
+        + viewArchivedNews()
+	}
+
+    class NewsDatabase {
+        + newsStorage: List<News>
+
+        + addNews(news: News): int
+        + removeNews(news_id: int): int
+        + ArchiveAllNews(password)
+    }
+
+    class Admin {
+        + adminID: int
+        
+        + deleteComment(commentID: int)
+    }
+
+    class Viewer {
+        + viewerID
+        + viewerPriviledges
+
+        + viewNews()
+        + searchNews()
+    }
+
+    Comment "0..*" --|> "1" News: are contained in
+    NewsDatabase "1" <-- "0..*" News: is stored in
+    SearchSystem "1" --> "1" NewsDatabase: uses
+    Viewer "0..*" --> "1" SearchSystem: searches
+    Viewer "0..*" --> "0..*" News: views
+    Admin "1..*" --> News: manages
+    Admin "1..*" --> Comment: manages
+    Admin  "1..*" --> "1" SearchSystem: uses
+
 }
 @enduml
