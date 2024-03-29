@@ -1,14 +1,19 @@
 @startuml manageUsers
 package ManageUsersModule {
-    class AdminUser {
-        - userID: int
-        - name: string
-    }
     class User {
-        - userID: int
-        - name: string
+        + userID: int
+        + name: string
+        + bio: string
+
+        + changeName(name: string): int
+        + updateBio(bio: string): int
     }
 
+    class AdminUser extends User {
+        + adminID: int
+
+        + updateUserDatabase()
+    }
     class SearchSystem {
         + searchQuery: string
         + searchResults: List<User>
@@ -36,8 +41,19 @@ package ManageUsersModule {
         + setStandards(): void
     }
 
-    User "1" -- "0..*" SearchSystem : "Uses for searching"
-    AdminUser "1" -- "0..*" SearchSystem : "Uses for searching"
-    AdminUser "1..*" -- "0..*" UserManager : "Manages"
+    class UserDatabase {
+        + users: List<Users>
+
+        + addUser(user: User)
+        + removeUser(user_id: int)
+        + viewUserDetails(user_id: int)
+    }
+
+    AdminUser "1..*" -- "1" UserDatabase: manages
+    User "1..*" <-- "1" UserDatabase: uses details of
+    AdminUser "1..*" --> "1" SearchSystem: searches using
+    AdminUser "1..*" --> "1" UserManager: uses
+    UserManager "1" --> "1" UserDatabase: accesses
+    SearchSystem "1" --> "1" UserDatabase: uses
 }
 @enduml
