@@ -20,14 +20,23 @@ package TimetableModule {
     }
 
     class Timetable {
-        - date
-        - time
-        - day
-        - subject
-        - teacher
-        - classroom
+        - date: date
+        - time: time
+        - day: enum
+        - subject: enum
+        - teacher: enum
+        - classroom: enum
         - subjectLimits: int
         - theme: enum
+
+        + changeDate(date: date): int
+        + changeTime(time: time): int
+        + changeDay(day: enum): int
+        + changeSubject(subject: enum): int
+        + changeTeacher(teacher: enum): int
+        + changeClassroom(classroom: enum): int
+        + modifySubjectLimits(subjectLimits: int): int
+
     }
 
     TimetableCreator "1" -- "0..*" Timetable : creates

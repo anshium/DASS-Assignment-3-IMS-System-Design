@@ -1,8 +1,18 @@
 @startuml messages
 package MessagesModule {
     class User {
-        - userID: int
-        - name: string
+        + userID: int
+        + name: string
+        + bio: string
+
+        + changeName(name: string): int
+        + updateBio(bio: string): int
+    }
+
+    class UserWithHigherAuthority extends User {
+        + position: enum
+
+        + broadcastMessage()
     }
 
     class Message {
@@ -45,8 +55,9 @@ package MessagesModule {
         + listAvailableRecipientGroups()
     }
 
-    User "1" -- "0..*" Message : "Sends/Receives"
-    User "1" -- "1" CommunicationRecordingSystem : "Manages"
-    User "1" -- "1" Broadcaster : "Uses"
+    Broadcaster "1" --> "0..*" Message: broadcasts
+    CommunicationRecordingSystem "1" --> "0..*" Message: Records
+    User "0..*" --> "0..*" Message: Sends
+    UserWithHigherAuthority "0..*" --> "1" Broadcaster: uses
 }
 @enduml
