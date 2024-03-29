@@ -18,9 +18,12 @@ package FinanceModule {
 		- categoryId: int
 		- categoryName: string
 		- description: string
+
 		+ getCategoryId(): int
 		+ getCategoryName(): string
 		+ getDescription(): string
+		+ changeCategoryName(name: string): int
+		+ changeDescription(description: string): int
 	}
 
 	class feeClassificationSystem {
@@ -90,18 +93,24 @@ package FinanceModule {
 		- assetId: int
 		- assetName: string
 		- assetValue: double
+		
 		+ getAssetId(): int
 		+ getAssetName(): string
 		+ getAssetValue(): double
+		+ changeAssetName(name: string): int
+		+ changeAssetValue(value: double): int
 	}
 
 	class Liability {
 		- liabilityId: int
 		- liabilityName: string
 		- liabilityAmount: double
+
 		+ getLiabilityId(): int
 		+ getLiabilityName(): string
 		+ getLiabilityAmount(): double
+		+ changeLiabilityName(name: string): int
+		+ changeLiabilityAmount(amount: double): int
 	}
 
 	class feeReportGenerationSystem {
@@ -130,6 +139,9 @@ package FinanceModule {
 		+ getAmount(): double
 		+ getDescription(): string
 		+ getExpenseDate(): Date
+		+ alterAmount(amount: double)
+		+ alterDescription(description: string)
+		+ alterDate(date: date)
 	}
 
 	class Income {
@@ -142,7 +154,30 @@ package FinanceModule {
 		+ getAmount(): double
 		+ getDescription(): string
 		+ getIncomeDate(): Date
+		+ alterAmount(amount: double)
+		+ alterDescription(description: string)
+		+ alterDate(date: date)
 	}
+
+	class User {
+        + userID: int
+        + name: string
+        + bio: string
+
+        + changeName(name: string): int
+        + updateBio(bio: string): int
+    }
+
+    class FinancePerson extends User {
+        + adminID: int
+
+        + updateUserDatabase()
+    }
+    class DonationHandler extends User {
+        + adminID: int
+
+        + updateUserDatabase()
+    }
 
 	expenseAndIncomesManagementSystem "1" o-- "1..*" Income: contains
 	expenseAndIncomesManagementSystem "1" o-- "1..*" Expense: contains
@@ -158,6 +193,11 @@ package FinanceModule {
 	feeReportGenerationSystem "1" -- "1" feeFineSystem: uses
 	feeClassificationSystem "1" -- "1" feeCollectionSystem: interfaces with
 
+	FinancePerson "1..*" -- "1" expenseAndIncomesManagementSystem: manages
+	FinancePerson "1..*" -- "1" feeReportGenerationSystem: manages
+	FinancePerson "1..*" -- "1" feeCollectionSystem: manages
+	FinancePerson "1..*" -- "1" assetAndLiabilitiesSystem: manages
+	DonationHandler "1..*" -- "1" donationSystem: handles
 }
 
 @enduml
