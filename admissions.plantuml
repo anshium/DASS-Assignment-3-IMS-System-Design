@@ -2,30 +2,37 @@
 package AdmissionsModule {
 	class admissionForm {
 		+ admissionId: int
-		+ username
+		+ username: string
 		+ details: Student
+		- password: string
 
 		+ updateDetails()
 		+ changeUserName()
-		' See this
-		# updateForm(password)
+		- updatePassword()
 	}
 
 	class User {
 		+ id: int
 		+ name: string
 		+ age: int
+
+		+ updateName(name: string): void
+		- checkValidAge(age: int): bool
+		+ updateAge(age: int): void
 	}
 
-	class Student extends User{
+	class Student extends User {
 		+ photo: Photo
 		+ guardian: Guardian
 		+ emergencyContact: EmergencyContact
 		+ previousEducation: PreviousEducation
 
-		+ addGuardian(guardian: guardian): void
-		+ addEmergencyContact(contact: emergencyContact): void
-		+ addPreviousEducation(eduDetails: previousEducation): void
+		+ addGuardian(guardian: Guardian): void
+		+ removeGuaradian(id: Guardian.id): void
+		+ addEmergencyContact(contact: EmergencyContact): void
+		+ updateEmergencyContact(contact_id: EmergencyContact.id): void
+		+ addPreviousEducation(eduDetails: PreviousEducation): void
+		+ updateEducationDetails(): void
 	}
 
 	class Photo {
@@ -49,7 +56,7 @@ package AdmissionsModule {
 		+ updateContactNumber(newContact: string): int
 	}
 
-	class EmergencyContact extends guardian{
+	class EmergencyContact extends Guardian{
 		+ description: string
 		+ contactNumber: string
 
@@ -67,11 +74,10 @@ package AdmissionsModule {
 		+ updateYear(newYear: int): int
 	}
 
-	admissionForm -- User
-	admissionForm -- Student
-	Student -- Photo
-	Student -- Guardian
-	Student -- EmergencyContact
-	Student -- PreviousEducation
+	admissionForm "1" -- "1..*" Student: "fills"
+	Student "1..*" -- "1" Photo : uploads
+	Student "1..*" -- "1..*" Guardian: has
+	Student "1..*" -- "1" EmergencyContact: has
+	Student "1..*" -- "1..*" PreviousEducation: has
 }
 @enduml

@@ -1,15 +1,5 @@
 @startuml timetable
 package TimetableModule {
-    abstract class User {
-        - name: string
-        - email: string
-    }
-
-    class Employee {
-        + setSubjectLimit(limit: int)
-        + getEmail(): string
-    }
-
     class TimetableCreator {
         - timetables: List<Timetable>
         + createTimetable(name, email)
@@ -41,8 +31,8 @@ package TimetableModule {
     }
 
     TimetableCreator "1" -- "0..*" Timetable : creates
-    TimetableCreator --|> User : generalizes
     TimetableCreator o-- AlertSystem : alerts
-    AlertSystem "1" -- "0..*" Employee : has
+
+    ' TimetableCreator should know the courses too.
 }
 @enduml
