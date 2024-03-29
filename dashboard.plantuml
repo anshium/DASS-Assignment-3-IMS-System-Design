@@ -8,7 +8,7 @@ package DashboardModule {
 		+ search(): void
 	}
 
-	class UserInterface {
+	class Navigator {
 		- theme: Theme
 		+ setTheme(theme: string): void
 		+ getTheme(): string
@@ -158,15 +158,6 @@ package DashboardModule {
 		'Student categories need to be added'
 	}
 
-	DashboardSearchBar -- UserInterface
-	UserInterface -- User
-	UserInterface -- InstituteKiosk
-	SettingsManager -- UserInterface
-	CourseManager -- BatchManager
-	SMS_Module -- UserInterface
-	StudentManager -- CourseManager
-	BatchManager -- Batch
-	UserInterface -- Theme
-	UserInterface -- DashboardNewsDisplay
+	
 }
 @enduml

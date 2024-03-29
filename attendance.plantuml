@@ -2,28 +2,80 @@
 
 package AttendanceModule {
 	class AttendanceUpdateSystem {
-		Date: +
-		ClassID: int +
-		Attendance Status List: List<UserId: int, Present/Absent: bool> +
-		Note/Remarks: +
-		markAttendance(date, id, attendance status list, remarks): +
-		updateRemarks(date, id, remarks): +
+		+ date: Date
+		+ class_id: int
+		+ attendance_status_list: List<user_id: int, present_absent: bool>
+		+ note_remarks: String
+		+ convertedReport: AttendanceReport
+		+ mark_attendance(date, id, attendance_status_list, remarks)
+		+ update_remarks(date, id, remarks)
 	}
 
 	class StandardiseReportConvertor {
-		Report Type: +
-		Conversion Settings: +
-		Converted Report: +
-		convertReport(reportType, conversionSettings): +
-		saveConvertedReport(convertedReport): +
+		+ report_type: enum
+		+ originalReport: SourceReport
+		+ converted_report: AttendanceReport
+		+ convert_report(report_type, conversion_settings)
+		+ save_converted_report(converted_report)
+	}
+
+	class AttendanceReport {
+		+ id: int
+		+ report_type: enum
+		+ name: string
+		+ sourceReportName: string
+		+ dateOfCreation: date
+		+ remarks: string
+		+ attendance_status_list: List<user_id: int, present_absent: bool>
+
+		+ updateName(name: string): void
+		- updateSourceReportName(name: string): void
+		+ updateDateOfCreation(dateOfCreation: date): void
+		+ updateRemaks(remarks: string): void
+		+ alterAttendanceStatusList(user_id: int, present_absent: bool)
 	}
 
 	class ReportFilteringSystem {
-		Report Type: +
-		Filters: +
-		Filtered Report: +
-		applyFilters(reportType, filters): +
-		saveFilteredReport(filteredReport): +
+		+ report_type: String
+		+ filters: enum
+		+ filtered_report: String
+
+		+ addFilter(filter: enum): void
+		+ apply_filters(report_type, filters)
+		+ save_filtered_report(filtered_report)
 	}
+
+	class SourceReport {
+		+ id: int
+		+ name: string
+		+ content: bin
+		+ reportType: enum
+		+ dateOfCreation: date
+
+		+ updateSourceReportName(name: string): int
+		+ updateSourceReportReportType(reportType: enum): int
+		+ updateSourceReportReportDateOfCreation(dateOfCreation: date): int
+	}
+
+	class ReportDatabase {
+		+ rawReports: List<SourceReport>
+		+ convertedReports: List<AttendanceReport>
+
+		+ appendConvertedReport(report: AttendanceReport): int
+		+ removeConvertedReport(report_id: int): int
+		+ appendRawReport(report: SourceReport): int
+		+ removeRawReport(report_id: int): int
+
+		+ getRawReport(report_id: int): int
+		+ getConvertedReport(report_id: int): int
+	}
+
+	SourceReport "0..*" -- "1" StandardiseReportConvertor: is put into
+	StandardiseReportConvertor "1" -- "1..*" AttendanceReport: outputs
+	AttendanceReport "1..*" -- "1" AttendanceUpdateSystem: is put into
+	AttendanceReport "1..*" -- ReportDatabase: is appended to
+	ReportFilteringSystem "1" -- "1" ReportDatabase: uses
+	SourceReport "1..*" -- "1" ReportDatabase: is fetched from
+
 }
 @enduml

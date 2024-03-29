@@ -56,9 +56,9 @@ package ExaminationsModule {
 		+ calculateCWA()
 	}
 
-	ExaminationSystem -- Exam
-	ReportSystem -- Report
-	ReportSystem -- AnalyticsSystem
-	ReportSystem -- Exam
+	ExaminationSystem "1" -- "1..*" Exam: "interfaces with"
+	ReportSystem "1" -- "0..*" Report: generates
+	ReportSystem "1" -- "1" AnalyticsSystem: uses
+	ReportSystem "1" -- "1..*" Exam: requires
 }
 @enduml
