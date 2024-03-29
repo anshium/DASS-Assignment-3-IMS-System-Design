@@ -144,18 +144,19 @@ package FinanceModule {
 		+ getIncomeDate(): Date
 	}
 
-	expenseAndIncomesManagementSystem -- Income
-	expenseAndIncomesManagementSystem -- Expense
-	feeCollectionSystem -- Fee
-	Fee -- FeeCategory
-	donationSystem -- Donation
-	assetAndLiabilitiesSystem -- Asset
-	assetAndLiabilitiesSystem -- Liability
-	feeFineSystem -- Fee
-	feeCollectionDateDesigningSystem -- feeCollectionSystem
-	feeClassificationSystem - Fee
-	feeReportGenerationSystem -- Fee
-	feeReportGenerationSystem -- feeFineSystem
+	expenseAndIncomesManagementSystem "1" o-- "1..*" Income: contains
+	expenseAndIncomesManagementSystem "1" o-- "1..*" Expense: contains
+	feeCollectionSystem "1" -- "1..*" Fee: uses
+	Fee "1" o-- "1" FeeCategory: has
+	donationSystem "1" -- "1..*" Donation: has
+	assetAndLiabilitiesSystem "1" -- "1..*" Asset: has
+	assetAndLiabilitiesSystem "1" -- "1..*" Liability: has
+	feeFineSystem "1" -- "1..*" Fee: uses
+	feeCollectionDateDesigningSystem "1" --o "1" feeCollectionSystem: is part of
+	feeClassificationSystem "1" -- "1" Fee: classifies
+	feeReportGenerationSystem "1" -- "1..*" Fee: uses
+	feeReportGenerationSystem "1" -- "1" feeFineSystem: uses
+	feeClassificationSystem "1" -- "1" feeCollectionSystem: interfaces with
 
 }
 
