@@ -98,11 +98,11 @@ class Student{
 	Student "1..*" o-- "1..*" Guardian: has
 	Student "1..*" o-- "1" EmergencyContact: has
 	Student "1..*" o-- "1..*" PreviousEducation: has
-    Student "0..*" -- "1" StudentDatabase: is stored in
-    StudentSearch "1" -- "1" StudentDatabase: uses
-    StudentManager "1" -- "1" StudentDatabase: uses
-    AdminUser "1..*" -- "1" StudentManager: uses
-    AdminUser "1..*" -- "1" StudentDatabase: manages
+    Student "0..*" --> "1" StudentDatabase: is stored in
+    StudentSearch "1" --> "1" StudentDatabase: uses
+    StudentManager "1" --> "1" StudentDatabase: uses
+    AdminUser "1..*" --> "1" StudentManager: uses
+    AdminUser "1..*" --> "1" StudentDatabase: manages
     AdminUser "0..*" --> "1" StudentSearch: searches using
 
 @enduml
