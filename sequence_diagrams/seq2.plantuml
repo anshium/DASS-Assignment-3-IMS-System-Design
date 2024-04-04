@@ -1,0 +1,37 @@
+@startuml attendanceReport
+actor AttendanceCollector
+participant SourceReport
+participant StandardizedReportConverter
+participant AttendanceReport
+database ReportDatabase
+participant AttendanceUpdateSystem
+
+AttendanceCollector -> SourceReport: Create SourceReport
+activate SourceReport
+SourceReport -> StandardizedReportConverter: Send SourceReport
+activate StandardizedReportConverter
+alt SourceReport type is acceptable
+    StandardizedReportConverter -> AttendanceReport: Generate AttendanceReport
+    activate AttendanceReport
+    AttendanceReport -> ReportDatabase: Store AttendanceReport
+    deactivate AttendanceReport
+    ReportDatabase --> StandardizedReportConverter: Success
+else SourceReport type is not acceptable
+    StandardizedReportConverter --> AttendanceCollector: Error
+    deactivate StandardizedReportConverter
+end
+
+alt ReportDatabase accepts AttendanceReport
+    AttendanceReport -> AttendanceUpdateSystem: Send AttendanceReport
+    activate AttendanceUpdateSystem
+    AttendanceUpdateSystem --> AttendanceReport: AttendanceSuccessfullyUpdatedCode
+    deactivate AttendanceUpdateSystem
+else ReportDatabase rejects AttendanceReport
+    ReportDatabase --> AttendanceReport: Reject
+end
+
+activate AttendanceUpdateSystem
+AttendanceUpdateSystem -> AttendanceCollector: SendUpdate
+deactivate AttendanceUpdateSystem
+
+@enduml

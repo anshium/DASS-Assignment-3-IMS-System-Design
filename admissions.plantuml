@@ -80,4 +80,4 @@ package AdmissionsModule {
 	Student "1..*" -- "1" EmergencyContact: has
 	Student "1..*" -- "1..*" PreviousEducation: has
 }
-@enduml
+@enduml	

@@ -41,6 +41,7 @@ package DashboardModule {
 
 	class AdminUser extends User {
 		- AdminID
+		+ updateDetails()
 	}
 
 	class DashboardNewsDisplay {

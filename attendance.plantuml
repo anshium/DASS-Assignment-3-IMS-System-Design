@@ -1,6 +1,13 @@
 @startuml attendance
 
 package AttendanceModule {
+	class Admin {
+		- adminID: int
+		- attendanceReports: List<AttendanceReport>
+		+ viewAllReports(): void
+		+ applyFilter(filter: Filter): void
+		+ createReport()
+	}
 	class AttendanceUpdateSystem {
 		+ date: Date
 		+ class_id: int
@@ -28,6 +35,8 @@ package AttendanceModule {
 		+ remarks: string
 		+ attendance_status_list: List<user_id: int, present_absent: bool>
 
+		+ CreateReport()
+		+ SendReport()
 		+ updateName(name: string): void
 		- updateSourceReportName(name: string): void
 		+ updateDateOfCreation(dateOfCreation: date): void
@@ -52,6 +61,8 @@ package AttendanceModule {
 		+ reportType: enum
 		+ dateOfCreation: date
 
+		+ CreateReport()
+		+ SendReport()
 		+ updateSourceReportName(name: string): int
 		+ updateSourceReportReportType(reportType: enum): int
 		+ updateSourceReportReportDateOfCreation(dateOfCreation: date): int
@@ -76,6 +87,9 @@ package AttendanceModule {
 	AttendanceReport "1..*" -- ReportDatabase: is appended to
 	ReportFilteringSystem "1" -- "1" ReportDatabase: uses
 	SourceReport "1..*" -- "1" ReportDatabase: is fetched from
+	Admin "1..*" --> SourceReport: makes
+	Admin "1..*" --> ReportDatabase: manages
+	Admin "1..*" <-- AttendanceUpdateSystem: sends updates to
 
 }
 @enduml

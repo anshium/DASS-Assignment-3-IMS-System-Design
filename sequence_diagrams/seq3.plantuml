@@ -1,0 +1,27 @@
+@startuml message_sequence_diagram
+actor Messager
+participant Message
+participant CommunicationRecordingSystem
+
+activate Messager
+Messager -> Message: createMessage()
+activate Message
+Message -> Messager: extractSenderID()
+Messager -> Message: enterMessageContent()
+Message -> Messager: askForRecipients()
+loop for each recipientID
+    Messager -> Message: enterRecipientID()
+    alt isValid(recipientID)
+        Message -> Message: addRecipient(recipientID)
+    else
+        Message -> Messager: rejectRecipientID(recipientID)
+    end
+end
+Message -> CommunicationRecordingSystem: initiateRecording()
+activate CommunicationRecordingSystem
+CommunicationRecordingSystem --> Message: collectMessageData()
+deactivate CommunicationRecordingSystem
+Message -> Message: sendMessage()
+deactivate Message
+deactivate Messager
+@enduml

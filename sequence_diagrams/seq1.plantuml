@@ -1,0 +1,31 @@
+@startuml
+actor Employee
+actor Admin
+participant PayrollForm
+participant PayrollManager
+database EmployeeDatabase
+participant PayslipApprovalSystem
+
+Employee -> PayrollManager: Fill PayrollForm
+PayrollManager -> PayrollForm: Generate PayrollForm
+PayrollManager -> EmployeeDatabase: Look up details
+activate PayrollManager
+alt Details are not right
+    PayrollManager -> PayrollForm: Reject Payroll
+else Details are right
+    PayrollManager -> EmployeeDatabase: Add Payroll
+end
+
+Admin -> PayslipApprovalSystem: Use PayslipApprovalSystem
+PayslipApprovalSystem -> PayrollManager: Get Payslip
+activate PayslipApprovalSystem
+PayrollManager --> PayslipApprovalSystem: Send Payslip
+deactivate PayrollManager
+
+alt Admin approves Payslip
+    Admin -> PayslipApprovalSystem: Approve Payslip
+else Admin denies Payslip
+    Admin -> PayslipApprovalSystem: Deny Payslip
+end
+
+@enduml

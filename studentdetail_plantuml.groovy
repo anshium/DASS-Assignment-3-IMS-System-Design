@@ -19,6 +19,7 @@ package StudentDetails {
 	}
 
 	class Student{
+		+ studentID: int
 		+ photo: Photo
 		+ guardian: Guardian
 		+ emergencyContact: EmergencyContact
