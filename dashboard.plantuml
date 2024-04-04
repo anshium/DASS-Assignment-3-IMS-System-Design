@@ -1,7 +1,7 @@
 @startuml dashboard
 
 package DashboardModule {
-	class DashboardSearchBar {
+	class DashboardSearchBar extends Navigator {
 		- searchQuery: string
 		+ setSearchQuery(query: string): void
 		+ getSearchQuery(): string
@@ -37,6 +37,10 @@ package DashboardModule {
 		- password: string
 		+ login(username: string, password: string): boolean
 		+ logout(): void
+	}
+
+	class AdminUser extends User {
+		- AdminID
 	}
 
 	class DashboardNewsDisplay {
@@ -158,6 +162,29 @@ package DashboardModule {
 		'Student categories need to be added'
 	}
 
+	'Add Admin User and more
 	
+	User "1..*" -- "1" CourseManager: Uses
+	User "1..*" -- "1" InstituteKiosk: Views
+	User "1..*" -- "1" Navigator: Interacts with
+
+	BatchManager "1" -- "1..*" Batch: uses
+	User "1" -- "1" DashboardNewsDisplay: views
+	SettingsManager "1" --> "1..*" Setting: handles
+
+	User "1..*" --> "1" BatchManager: interacts with
+
+	User "0..*" --> SMS_Module: sends messages using
+
+	User "1..*" --> "1" SettingsManager: interacts with
+
+	CourseManager "1" --> Course: has
+
+	AdminUser "0..*" --> "1" StudentManager: uses
+
+	Navigator "1" --> "1" Theme: uses
+
+	User "1..*" --> "1" Theme: Customises
+
 }
 @enduml
