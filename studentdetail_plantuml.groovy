@@ -1,23 +1,24 @@
 @startuml
-class StudentManager {
-    - students: list<Student>
-    + addStudent(name: string, batch: string, additionalDetails: string): void
-    + updateStudent(studentID: int, attributes: dict): void
-    + removeStudent(studentID: int): void
-}
+package StudentDetails {
+	class StudentManager {
+		- students: list<Student>
+		+ addStudent(name: string, batch: string, additionalDetails: string): void
+		+ updateStudent(studentID: int, attributes: dict): void
+		+ removeStudent(studentID: int): void
+	}
 
-class StudentSearch {
-    - filters: list<string>
+	class StudentSearch {
+		- filters: list<string>
 
-    + searchByBatch(batch: string): list<Student>
-    + searchByName(name: string): list<Student>
-    + searchByStatus(status: string): list<Student>
-    + advancedSearch(filters: dict): list<Student>
-    + viewAllStudents(): list<Student>
+		+ searchByBatch(batch: string): list<Student>
+		+ searchByName(name: string): list<Student>
+		+ searchByStatus(status: string): list<Student>
+		+ advancedSearch(filters: dict): list<Student>
+		+ viewAllStudents(): list<Student>
 
-}
+	}
 
-class Student{
+	class Student{
 		+ photo: Photo
 		+ guardian: Guardian
 		+ emergencyContact: EmergencyContact
@@ -104,5 +105,5 @@ class Student{
     AdminUser "1..*" --> "1" StudentManager: uses
     AdminUser "1..*" --> "1" StudentDatabase: manages
     AdminUser "0..*" --> "1" StudentSearch: searches using
-
+}
 @enduml

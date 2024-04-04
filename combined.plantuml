@@ -1,0 +1,1097 @@
+@startuml system
+
+package AdmissionsModule {
+	class admissionForm {
+		+ admissionId: int
+		+ username: string
+		+ details: Student
+		- password: string
+
+		+ updateDetails()
+		+ changeUserName()
+		- updatePassword()
+	}
+
+	class User {
+		+ id: int
+		+ name: string
+		+ age: int
+
+		+ updateName(name: string): void
+		- checkValidAge(age: int): bool
+		+ updateAge(age: int): void
+	}
+
+	class Student extends User {
+		+ photo: Photo
+		+ guardian: Guardian
+		+ emergencyContact: EmergencyContact
+		+ previousEducation: PreviousEducation
+
+		+ addGuardian(guardian: Guardian): void
+		+ removeGuaradian(id: Guardian.id): void
+		+ addEmergencyContact(contact: EmergencyContact): void
+		+ updateEmergencyContact(contact_id: EmergencyContact.id): void
+		+ addPreviousEducation(eduDetails: PreviousEducation): void
+		+ updateEducationDetails(): void
+	}
+
+	class Photo {
+		+ size: int
+		+ alt: string
+		+ image: bin
+		+ dateOfCreation: date
+		+ resize(newSize: int): void
+		+ updateAltText(newAltText: string): void
+		+ changeImage(newImage: bin): void
+	}
+
+	class Guardian {
+		+ id: int
+		+ name: string
+		+ relationship: string
+		+ contactNumber: string
+
+		+ updateName(name: string): int
+		+ updateRelationship(relationship: string): int
+		+ updateContactNumber(newContact: string): int
+	}
+
+	class EmergencyContact extends Guardian{
+		+ description: string
+		+ contactNumber: string
+
+		+ updateContactNumber(newContact: string): int
+		+ updateDescription(newDesc: string): int
+	}
+
+	class PreviousEducation {
+		+ schoolName: string
+		+ grade: string
+		+ year: int
+		
+		+ updateSchoolName(schoolName: string): int
+		+ updateGrade(newGrade: string): int
+		+ updateYear(newYear: int): int
+	}
+
+	admissionForm "1" -- "1..*" Student: "fills"
+	Student "1..*" -- "1" Photo : uploads
+	Student "1..*" -- "1..*" Guardian: has
+	Student "1..*" -- "1" EmergencyContact: has
+	Student "1..*" -- "1..*" PreviousEducation: has
+}
+
+package AttendanceModule {
+	class AttendanceUpdateSystem {
+		+ date: Date
+		+ class_id: int
+		+ attendance_status_list: List<user_id: int, present_absent: bool>
+		+ note_remarks: String
+		+ convertedReport: AttendanceReport
+		+ mark_attendance(date, id, attendance_status_list, remarks)
+		+ update_remarks(date, id, remarks)
+	}
+
+	class StandardiseReportConvertor {
+		+ report_type: enum
+		+ originalReport: SourceReport
+		+ converted_report: AttendanceReport
+		+ convert_report(report_type, conversion_settings)
+		+ save_converted_report(converted_report)
+	}
+
+	class AttendanceReport {
+		+ id: int
+		+ report_type: enum
+		+ name: string
+		+ sourceReportName: string
+		+ dateOfCreation: date
+		+ remarks: string
+		+ attendance_status_list: List<user_id: int, present_absent: bool>
+
+		+ updateName(name: string): void
+		- updateSourceReportName(name: string): void
+		+ updateDateOfCreation(dateOfCreation: date): void
+		+ updateRemaks(remarks: string): void
+		+ alterAttendanceStatusList(user_id: int, present_absent: bool)
+	}
+
+	class ReportFilteringSystem {
+		+ report_type: String
+		+ filters: enum
+		+ filtered_report: String
+
+		+ addFilter(filter: enum): void
+		+ apply_filters(report_type, filters)
+		+ save_filtered_report(filtered_report)
+	}
+
+	class SourceReport {
+		+ id: int
+		+ name: string
+		+ content: bin
+		+ reportType: enum
+		+ dateOfCreation: date
+
+		+ updateSourceReportName(name: string): int
+		+ updateSourceReportReportType(reportType: enum): int
+		+ updateSourceReportReportDateOfCreation(dateOfCreation: date): int
+	}
+
+	class ReportDatabase {
+		+ rawReports: List<SourceReport>
+		+ convertedReports: List<AttendanceReport>
+
+		+ appendConvertedReport(report: AttendanceReport): int
+		+ removeConvertedReport(report_id: int): int
+		+ appendRawReport(report: SourceReport): int
+		+ removeRawReport(report_id: int): int
+
+		+ getRawReport(report_id: int): int
+		+ getConvertedReport(report_id: int): int
+	}
+
+	SourceReport "0..*" -- "1" StandardiseReportConvertor: is put into
+	StandardiseReportConvertor "1" -- "1..*" AttendanceReport: outputs
+	AttendanceReport "1..*" -- "1" AttendanceUpdateSystem: is put into
+	AttendanceReport "1..*" -- ReportDatabase: is appended to
+	ReportFilteringSystem "1" -- "1" ReportDatabase: uses
+	SourceReport "1..*" -- "1" ReportDatabase: is fetched from
+
+}
+
+package DashboardModule {
+	class DashboardSearchBar extends Navigator {
+		- searchQuery: string
+		+ setSearchQuery(query: string): void
+		+ getSearchQuery(): string
+		+ search(): void
+	}
+
+	class Navigator {
+		- theme: Theme
+		+ setTheme(theme: string): void
+		+ getTheme(): string
+		+ displayMessage(message: string): void
+		+ goToAdmissions()
+		+ goToExaminations()
+		+ goToAdmissions()
+		+ goToAdmissions()
+	}
+
+	class Theme {
+		- colorScheme: string
+		- fontSize: int
+		- backgroundImage: string
+
+		+ setColorScheme(colorScheme: string): void
+		+ setFontSize(fontSize: int): void
+		+ setBackgroundImage(imagePath: string): void
+		+ getColorScheme(): string
+		+ getFontSize(): int
+		+ getBackgroundImage(): string
+	}
+
+	class User {
+		- username: string
+		- password: string
+		+ login(username: string, password: string): boolean
+		+ logout(): void
+	}
+
+	class AdminUser extends User {
+		- AdminID
+	}
+
+	class DashboardNewsDisplay {
+		news: string
+
+		+ getNews()
+		+ updateNews()
+		+ removeNews()
+	}
+
+	class InstituteKiosk {
+		- information: string
+		- date: date
+		+ displayInformation(info: string): void
+		+ updateDate()
+	}
+
+	class SettingsManager {
+		- settings: Setting
+		+ setSetting(key: string, value: string): void
+		+ getSetting(key: string): string
+		+ saveSettings(): void
+	}
+
+	' Setting is a class for ease of storing multiple settings
+
+	class Setting {
+		+ language: enum
+		+ country: enum
+		+ currency: enum
+		+ time_zone: enum
+
+		+ setLanguage()
+		+ updateLanguage()
+		+ setCountry()
+		+ updateCountry()
+		+ setCurrency()
+		+ updateCurrency()
+		+ setTimeZone()
+		+ updateTimeZone()
+	}
+
+	class AdminSetting extends Setting {
+		+ gradingSystemState
+		+ uniqueIDState
+
+		+ enableGradingSystem()
+		+ enableAutomaticUniqueIDs()
+	}
+
+	class CourseManager {
+		- courses: List<Course>
+
+		+ addCourse(course: Course): void
+		+ removeCourse(courseId: string): void
+		+ updateCourse(courseId: string, newDetails: CourseDetails): void
+	}
+
+	class Course {
+		+ id: int
+		+ name: string
+		+ credits: int
+		+ type: enum
+		+ strength: int
+
+		+ updateCourseName()
+		+ updateCourseCredits()
+		+ updateCourseType()
+		+ updateCourseStrength()
+	}
+
+	class Elective extends Course {
+		+ max_strength
+
+		+ updateMaxStrength()
+	}
+
+	class BatchManager {
+		- batches: List<Batch>
+		+ addBatch(batch: Batch): void
+		+ removeBatch(batchId: string): void
+		+ updateBatch(batchId: string, newDetails: BatchDetails): void
+	}
+
+	class Batch {
+		+ id: int
+		+ name: string
+		+ strength: int
+		+ isGraduated: bool
+
+		+ getBatchID()
+		+ updateBatchName()
+		+ updateBatchStrength()
+		+ changeGraduationStatus()
+	}
+
+	class SMS_Module {
+		- phoneNumber: int
+		- message: string
+		- isActivated: bool
+		- recipientPhoneNumbers: List<int>
+
+		+ activateSMS_Module()
+		+ setPhoneNumber(number: string): void
+		+ getPhoneNumber(): string
+		+ sendSMS(message: string): void
+		+ addRecipientPhoneNumber(phoneNumber: int)
+		+ removeRecipientPhoneNumber(phoneNumber: int)
+		+ scheduleSMS()
+	}
+
+	' To see
+	class StudentManager {
+		- students: Student[]
+
+		+ addStudent(student: Student): void
+		+ removeStudent(studentId: string): void
+		+ updateStudent(studentId: string, newDetails: StudentDetails): void
+		'Student categories need to be added'
+	}
+
+	'Add Admin User and more
+	
+	User "1..*" -- "1" CourseManager: Uses
+	User "1..*" -- "1" InstituteKiosk: Views
+	User "1..*" -- "1" Navigator: Interacts with
+
+	BatchManager "1" -- "1..*" Batch: uses
+	User "1" -- "1" DashboardNewsDisplay: views
+	SettingsManager "1" --> "1..*" Setting: handles
+
+	User "1..*" --> "1" BatchManager: interacts with
+
+	User "0..*" --> SMS_Module: sends messages using
+
+	User "1..*" --> "1" SettingsManager: interacts with
+
+	CourseManager "1" --> Course: has
+
+	AdminUser "0..*" --> "1" StudentManager: uses
+
+	Navigator "1" --> "1" Theme: uses
+
+	User "1..*" --> "1" Theme: Customises
+
+}
+
+package ExaminationsModule {
+	class ExaminationSystem {
+		+ examIdList: ids[int]
+		+ groupingParameters: list<string>
+		+ groupExams(grouping_parameter)
+	}
+
+	class Exam {
+		+ id: int
+		+ name: string
+		' Use the course class
+		+ course: Course
+		+ duration: time
+		+ type: enum
+		+ maximum_marks: int
+
+		+ updateName()
+		+ updateCourse()
+		+ updateDuration()
+		+ updateType()
+		+ updateMaximumMarks(newMarks: int)
+	}
+
+	class ReportSystem {
+		+ reports: List<Report>
+
+
+		+ generateReport(exam)
+		+ viewAllReports()
+		+ deleteAllReports()
+		+ renderAllReports()
+		+ renderReport(exam)
+	}
+
+	class Report {
+		+ Student_ID
+		+ details: Student
+		+ analytics: List<GPA, CCE, CWA>
+		+ reportGenerationDate
+
+		'Would get the details via student ID'
+		+ renderReport()
+		+ displayStudentDetails()
+		+ generateAnalytics()
+		+ updateReportGenerationDate()
+	}
+
+	class AnalyticsSystem {
+		+ GPA: float 
+		+ CCE: float
+		+ CWA: List<float>
+
+		+ calculateGPA()
+		+ calculateCCE()
+		+ calculateCWA()
+	}
+
+	ExaminationSystem "1" -- "1..*" Exam: "interfaces with"
+	ReportSystem "1" -- "0..*" Report: generates
+	ReportSystem "1" -- "1" AnalyticsSystem: uses
+	ReportSystem "1" -- "1..*" Exam: requires
+}
+
+package FinanceModule {
+	class Fee {
+		- feeId: int
+		- amount: double
+		- dueDate: Date
+		- isPaid: boolean
+		- category: FeeCategory
+
+		+ getFeeId(): int
+		+ getAmount(): double
+		+ getDueDate(): Date
+		+ isPaid(): boolean
+		+ markAsPaid(): void
+	}
+
+	class FeeCategory {
+		- categoryId: int
+		- categoryName: string
+		- description: string
+
+		+ getCategoryId(): int
+		+ getCategoryName(): string
+		+ getDescription(): string
+		+ changeCategoryName(name: string): int
+		+ changeDescription(description: string): int
+	}
+
+	class feeClassificationSystem {
+		- feeCategories: List<FeeCategory>
+		+ addFeeCategory(category: FeeCategory): void
+		+ removeFeeCategory(categoryId: int): void
+		+ classifyFee(fee: Fee): FeeCategory
+	}
+
+	class feeCollectionDateDesigningSystem {
+		- collectionDates: Map<string, Date>
+		+ setCollectionDate(collectionType: string, date: Date): void
+		+ getCollectionDate(collectionType: string): Date
+	}
+
+	class feeCollectionSystem {
+		+ feesToPay: Fee
+		+ modeOfPayment: enum
+		
+		+ payFees()
+		+ changeModeOfPayment()
+		+ cancelPayment()
+	}
+
+	class feeFineSystem {
+		+ fineRate: float
+		- defaulters : List<Users>
+		- totalDefaulters: float
+		- totalFinesCollected: float
+		
+		+ addDefaulter()
+		+ removeDefaulter()
+		+ updateFineRate(newFineRate: float): void
+		+ calculateFine(amount: float): float
+		+ recordFinePayment(amountPaid: float): void
+		+ getTotalFinesCollected(): float
+	}
+
+	class donationSystem {
+		- donations: List<Donation>
+		+ addDonation(donation: Donation): void
+		+ removeDonation(donationId: int): void
+		+ listDonations(): List<Donation>
+		+ getTotalDonations(): double
+	}
+
+	class Donation {
+		- donationId: int
+		- donorName: string
+		- amount: double
+		- donationDate: Date
+		+ getDonationId(): int
+		+ getDonorName(): string
+		+ getAmount(): double
+		+ getDonationDate(): Date
+	}
+
+	class assetAndLiabilitiesSystem {
+		- assets: List<Asset>
+		- liabilities: List<Liability>
+		+ addAsset(asset: Asset): void
+		+ addLiability(liability: Liability): void
+		+ calculateNetWorth(): double
+	}
+
+	class Asset {
+		- assetId: int
+		- assetName: string
+		- assetValue: double
+		
+		+ getAssetId(): int
+		+ getAssetName(): string
+		+ getAssetValue(): double
+		+ changeAssetName(name: string): int
+		+ changeAssetValue(value: double): int
+	}
+
+	class Liability {
+		- liabilityId: int
+		- liabilityName: string
+		- liabilityAmount: double
+
+		+ getLiabilityId(): int
+		+ getLiabilityName(): string
+		+ getLiabilityAmount(): double
+		+ changeLiabilityName(name: string): int
+		+ changeLiabilityAmount(amount: double): int
+	}
+
+	class feeReportGenerationSystem {
+		- generatedReports: List<Report>
+		'Should the reports go to the database, or should they rest with the system?: Can do that it goes to the cache and everytime the generatedReports is invoked, it fetches the data into this variable'
+
+		+ generateFeeReport(startDate: Date, endDate: Date): void
+		+ viewGeneratedReports(): List<Report>
+	}
+
+	class expenseAndIncomesManagementSystem {
+		- expenses: List<Expense>
+		- incomes: List<Income>
+		+ addExpense(expense: Expense): void
+		+ addIncome(income: Income): void
+		+ calculateBalance(): double
+	}
+
+	class Expense {
+		- expenseId: int
+		- amount: double
+		- description: string
+		- expenseDate: Date
+
+		+ getExpenseId(): int
+		+ getAmount(): double
+		+ getDescription(): string
+		+ getExpenseDate(): Date
+		+ alterAmount(amount: double)
+		+ alterDescription(description: string)
+		+ alterDate(date: date)
+	}
+
+	class Income {
+		- incomeId: int
+		- amount: double
+		- description: string
+		- incomeDate: Date
+
+		+ getIncomeId(): int
+		+ getAmount(): double
+		+ getDescription(): string
+		+ getIncomeDate(): Date
+		+ alterAmount(amount: double)
+		+ alterDescription(description: string)
+		+ alterDate(date: date)
+	}
+
+	class User {
+        + userID: int
+        + name: string
+        + bio: string
+
+        + changeName(name: string): int
+        + updateBio(bio: string): int
+    }
+
+    class FinancePerson extends User {
+        + adminID: int
+
+        + updateUserDatabase()
+    }
+    class DonationHandler extends User {
+        + adminID: int
+
+        + updateUserDatabase()
+    }
+
+	expenseAndIncomesManagementSystem "1" o-- "1..*" Income: contains
+	expenseAndIncomesManagementSystem "1" o-- "1..*" Expense: contains
+	feeCollectionSystem "1" -- "1..*" Fee: uses
+	Fee "1" o-- "1" FeeCategory: has
+	donationSystem "1" -- "1..*" Donation: has
+	assetAndLiabilitiesSystem "1" -- "1..*" Asset: has
+	assetAndLiabilitiesSystem "1" -- "1..*" Liability: has
+	feeFineSystem "1" -- "1..*" Fee: uses
+	feeCollectionDateDesigningSystem "1" --o "1" feeCollectionSystem: is part of
+	feeClassificationSystem "1" -- "1" Fee: classifies
+	feeReportGenerationSystem "1" -- "1..*" Fee: uses
+	feeReportGenerationSystem "1" -- "1" feeFineSystem: uses
+	feeClassificationSystem "1" -- "1" feeCollectionSystem: interfaces with
+
+	FinancePerson "1..*" -- "1" expenseAndIncomesManagementSystem: manages
+	FinancePerson "1..*" -- "1" feeReportGenerationSystem: manages
+	FinancePerson "1..*" -- "1" feeCollectionSystem: manages
+	FinancePerson "1..*" -- "1" assetAndLiabilitiesSystem: manages
+	DonationHandler "1..*" -- "1" donationSystem: handles
+}
+
+package HumanResourcesModule {
+
+	class Employee {
+		+ employeeId: int
+		+ name: String
+		+ email: String
+		+ position: enum
+		+ department: enum
+		+ isAdmin: bool
+		+ onLeave: bool
+
+		+ changeName() 
+		+ changeEmail() 
+		+ changePosition() 
+		+ changeDepartment()
+		+ updateLeaveStatus(bool): int 
+	}
+
+	class EmployeeAdmissionForm {
+		+ formId: int
+		+ dateSubmitted: Date
+		+ applicant: Employee
+		
+		+ alterDate()
+		+ alterApplicant()
+	}
+
+	class PayrollManager {
+		+ payrollForms: List<PayrollForm>
+
+		+ generatePayroll(employee: Employee): PayrollForm
+		+ addPayrollForm(payrollForm: PayrollForm): int
+		+ removePayrollForm(formId: int): int
+		+ viewAllPayrollForms(): int
+		+ viewPayrollForm(formID | employeeID): int
+	}
+
+	class PayrollForm {
+		+ formId: int
+		+ employee: Employee
+		+ payPeriod: Date
+		+ netSalary: double
+		
+		+ updateEmployee()
+		+ updatePayPeriod()
+		+ updateNetSalary()
+
+	}
+
+	class LMS {
+		+ LeavesAvailable: Map<date, bool>
+		
+		+ updateName()
+		+ addLeave()
+		+ remitLeave()
+		'Only visible to the admin
+		+ approveLeave(password) 
+	}
+
+	class PayslipApprovalSystem {
+		+ systemId: int
+
+		+ approvePayslip(payslip: PayrollForm)
+		+ rejectPayslip(payslip: PayrollForm)
+	}
+
+	class SearchSystem {
+		+ searchId: int
+		+ searchQuery: string
+		
+		+ search(keyword: String): List<Object>
+		+ searchEmployee(employeeID: int): int
+		+ searchPayrollForm(formID: int): int
+	}
+
+	class Admin extends Employee{
+		- adminId: int
+		- adminName: String
+		+ getInstance(): Admin
+		+ getAdminId(): int
+		+ getAdminName(): String
+	}
+
+	class EmployeeDatabase {
+		+ employees: List<Employee>
+		+ num_employees: int
+		+ num_admins: int
+
+		+ addEmployee(employeeId: int): int
+		+ removeEmployee(employeeId: int): int
+		- updateEmployeeNumber(): int
+		+ setEmployeeAsAdmin(employeeID: int, password: string): int
+		+ removeEmployeeAsAdmin(employeeID: int, password: string): int
+		- updateAdminNumber(): int
+	}
+
+	Admin "1..*" -- "1" PayslipApprovalSystem: approves payslip using
+	Employee "1.." --> "1" LMS: applies leaves on
+	Employee "1..*" --> "1" PayrollForm: fills
+	Admin "1.." --> "1" SearchSystem: searches on
+	SearchSystem "1" --> "1" EmployeeDatabase: uses
+	' Employees can fill the employee admission form, while their position can be an applicant
+	Employee "1..*" --> "1" EmployeeAdmissionForm: fills
+	Admin "1..*" --> "1..*" EmployeeAdmissionForm: can fill on behalf of employee
+	PayrollManager "1" --> "1" EmployeeDatabase: uses
+	PayrollForm "1" --> PayrollManager: interfaces with / stores
+	SearchSystem "1" --> PayrollManager: uses
+	PayslipApprovalSystem "1" --> "1" PayrollManager: interfaces with
+	Admin "1" --> "1" LMS: approves leaves using
+}
+
+package NewsModule {
+    class News {
+        - id: int
+        - title: string
+        - content: string
+        - date: string
+        - comments: List<Comment>
+        + readNews(id: int): void
+        + updateNews(id: int, title: string, content: string, date: string): void
+        + updateNews(id: int, content: string, date: string): void
+        + deleteNews(title: string): void
+        + createNews(title: string, content: string, date: string): void
+        
+        + archiveNews(newsId: int): void
+        + unarchiveNews(newsId: int): void
+    }
+
+    class Comment {
+        - id: int
+        - content: string
+        - date: string
+        - author: string
+        - status: string
+        + addComment(content: string, author: string, date: string, id: int): void
+        + deleteComment(id: int): void
+    }
+
+    class ArchivedNews extends News{
+        - archiveId: int
+        - archivalDate: date
+
+        + updateArchivalDate(newDate: date): int
+        + viewArchivalDate(): date
+        + unarchiveNews(newsId: int): void
+    }
+
+    class SearchSystem {
+		+ searchQuery: string
+        + filters: enum
+        + tags: List<string>
+		
+		+ search(keyword: String): List<Object>
+        + applyFilter(filter: enum)
+        + removeFilter(filter: enum)
+        + addTag(tag: string)
+        + removeTag(tag: string)
+        + viewAllNews()
+        + viewArchivedNews()
+	}
+
+    class NewsDatabase {
+        + newsStorage: List<News>
+
+        + addNews(news: News): int
+        + removeNews(news_id: int): int
+        + ArchiveAllNews(password)
+    }
+
+    class Admin {
+        + adminID: int
+        
+        + deleteComment(commentID: int)
+    }
+
+    class Viewer {
+        + viewerID
+        + viewerPriviledges
+
+        + viewNews()
+        + searchNews()
+    }
+
+    Comment "0..*" --|> "1" News: are contained in
+    NewsDatabase "1" <-- "0..*" News: is stored in
+    SearchSystem "1" --> "1" NewsDatabase: uses
+    Viewer "0..*" --> "1" SearchSystem: searches
+    Viewer "0..*" --> "0..*" News: views
+    Admin "1..*" --> News: manages
+    Admin "1..*" --> Comment: manages
+    Admin  "1..*" --> "1" SearchSystem: uses
+
+}
+
+package ManageUsersModule {
+    class User {
+        + userID: int
+        + name: string
+        + bio: string
+
+        + changeName(name: string): int
+        + updateBio(bio: string): int
+    }
+
+    class AdminUser extends User {
+        + adminID: int
+
+        + updateUserDatabase()
+    }
+    class SearchSystem {
+        + searchQuery: string
+        + searchResults: List<User>
+
+        + addSearchQuery(query: string): void
+        + updateSearchQuery(query: string): void
+        + viewProfileBasedOnRoles(roles: List<role>): void
+        + search(): void
+    }
+
+    class UserManager {
+        + roles: List<enum>
+        + privileges: List<enum>
+        
+        + viewAllRoles(): void
+        + viewAllPrivileges(): void
+        + addNewRole(role: enum): void
+        + removeRole(role: enum): void
+        + updatePassword(user: User): void
+        + addNewPrivilege(privilege: enum): void
+        + removePrivileges(privilege: enum): void
+        + editUser(userID: int): void
+        + updateRole(userID: int, role: enum): void
+        + updatePrivileges(userID: int, privilege: enum): void
+        + setStandards(): void
+    }
+
+    class UserDatabase {
+        + users: List<Users>
+
+        + addUser(user: User)
+        + removeUser(user_id: int)
+        + viewUserDetails(user_id: int)
+    }
+
+    AdminUser "1..*" -- "1" UserDatabase: manages
+    User "1..*" <-- "1" UserDatabase: uses details of
+    AdminUser "1..*" --> "1" SearchSystem: searches using
+    AdminUser "1..*" --> "1" UserManager: uses
+    UserManager "1" --> "1" UserDatabase: accesses
+    SearchSystem "1" --> "1" UserDatabase: uses
+}
+
+package MessagesModule {
+    class User {
+        + userID: int
+        + name: string
+        + bio: string
+
+        + changeName(name: string): int
+        + updateBio(bio: string): int
+    }
+
+    class UserWithHigherAuthority extends User {
+        + position: enum
+
+        + broadcastMessage()
+    }
+
+    class Message {
+        + messageID: int
+        + sender_ID: int
+        + recipient_IDs: list<int>
+        + messageContent: string
+        + timestamp: date
+        + isBroadcast: bool
+        + isDraft: bool
+        + isDeleted: bool
+
+        + modifyMessage()
+        + addRecipient(userID: int)
+        + removeRecipient(userID: int)
+        + sendMessage()
+        + scheduleMessage()
+        + sendToDraft()
+        + deleteMessage()
+    }
+
+    class CommunicationRecordingSystem {
+        - messageIDs: List<int>
+
+        + getAllRecordings()
+        + deleteAllRecordings(password: string)
+        + getRecording(messageID: int)
+        + deleteRecording(messageID: int)
+    }
+
+    class Broadcaster {
+        + message_ID: int
+        + recipientGroupIDs: list<int>
+
+        + attachMessageToBroadcast()
+        + broadcastAttachedMessage()
+        + removeFromBroadcast()
+        + addRecipientGroup(groupID: int)
+        + removeRecipientGroup(groupID: int)
+        + listAvailableRecipientGroups()
+    }
+
+    Broadcaster "1" --> "0..*" Message: broadcasts
+    CommunicationRecordingSystem "1" --> "0..*" Message: Records
+    User "0..*" --> "0..*" Message: Sends
+    UserWithHigherAuthority "0..*" --> "1" Broadcaster: uses
+}
+
+package StudentDetails {
+	class StudentManager {
+		- students: list<Student>
+		+ addStudent(name: string, batch: string, additionalDetails: string): void
+		+ updateStudent(studentID: int, attributes: dict): void
+		+ removeStudent(studentID: int): void
+	}
+
+	class StudentSearch {
+		- filters: list<string>
+
+		+ searchByBatch(batch: string): list<Student>
+		+ searchByName(name: string): list<Student>
+		+ searchByStatus(status: string): list<Student>
+		+ advancedSearch(filters: dict): list<Student>
+		+ viewAllStudents(): list<Student>
+
+	}
+
+	class Student{
+		+ photo: Photo
+		+ guardian: Guardian
+		+ emergencyContact: EmergencyContact
+		+ previousEducation: PreviousEducation
+
+		+ addGuardian(guardian: Guardian): void
+		+ removeGuaradian(id: Guardian.id): void
+		+ addEmergencyContact(contact: EmergencyContact): void
+		+ updateEmergencyContact(contact_id: EmergencyContact.id): void
+		+ addPreviousEducation(eduDetails: PreviousEducation): void
+		+ updateEducationDetails(): void
+	}
+
+	class Photo {
+		+ size: int
+		+ alt: string
+		+ image: bin
+		+ dateOfCreation: date
+		+ resize(newSize: int): void
+		+ updateAltText(newAltText: string): void
+		+ changeImage(newImage: bin): void
+	}
+
+	class Guardian {
+		+ id: int
+		+ name: string
+		+ relationship: string
+		+ contactNumber: string
+
+		+ updateName(name: string): int
+		+ updateRelationship(relationship: string): int
+		+ updateContactNumber(newContact: string): int
+	}
+
+	class EmergencyContact extends Guardian{
+		+ description: string
+		+ contactNumber: string
+
+		+ updateContactNumber(newContact: string): int
+		+ updateDescription(newDesc: string): int
+	}
+
+	class PreviousEducation {
+		+ schoolName: string
+		+ grade: string
+		+ year: int
+		
+		+ updateSchoolName(schoolName: string): int
+		+ updateGrade(newGrade: string): int
+		+ updateYear(newYear: int): int
+	}
+
+
+    class StudentDatabase {
+        + students: List<Student>
+        + num_students: int
+
+        + addStudent(student: Student) 
+        + removeStudent(student_id: int) 
+    }
+
+    class User {
+        + userID: int
+        + name: string
+        + bio: string
+
+        + changeName(name: string): int
+        + updateBio(bio: string): int
+    }
+
+    class AdminUser extends User {
+        + adminID: int
+
+        + updateStudentDatabase()
+    }
+
+    Student "1..*" o-- "1" Photo : uploads
+	Student "1..*" o-- "1..*" Guardian: has
+	Student "1..*" o-- "1" EmergencyContact: has
+	Student "1..*" o-- "1..*" PreviousEducation: has
+    Student "0..*" --> "1" StudentDatabase: is stored in
+    StudentSearch "1" --> "1" StudentDatabase: uses
+    StudentManager "1" --> "1" StudentDatabase: uses
+    AdminUser "1..*" --> "1" StudentManager: uses
+    AdminUser "1..*" --> "1" StudentDatabase: manages
+    AdminUser "0..*" --> "1" StudentSearch: searches using
+}
+
+package TimetableModule {
+    class TimetableCreator {
+        - timetables: List<Timetable>
+        + createTimetable(name, email)
+        + createTimetableInAdvance(date, time, day, subject, teacher, classroom)
+        + editTimetableEntry(date, time, day, subject, teacher, classroom)
+        + deleteTimetableEntry()
+        + alertOnEmployeeSubjectLimits(employee: Employee)
+    }
+
+    class AlertSystem {
+        - subjectLimits: Map<Employee, int>
+        - threshold: int
+        + createAlert(subjectLimits)
+        + editThreshold()
+        + editAlert(subjectLimits)
+        + deleteAlert()
+        + verifyAlert(user)
+    }
+
+    class Timetable {
+        - date: date
+        - time: time
+        - day: enum
+        - subject: enum
+        - teacher: enum
+        - classroom: enum
+        - subjectLimits: int
+        - theme: enum
+
+        + changeDate(date: date): int
+        + changeTime(time: time): int
+        + changeDay(day: enum): int
+        + changeSubject(subject: enum): int
+        + changeTeacher(teacher: enum): int
+        + changeClassroom(classroom: enum): int
+        + modifySubjectLimits(subjectLimits: int): int
+
+    }
+
+    TimetableCreator "1" -- "0..*" Timetable : creates
+    TimetableCreator o-- AlertSystem : alerts
+
+    ' TimetableCreator should know the courses too.
+}
+
+	DashboardNewsDisplay "1" -- "1" NewsModule: interacts with
+	DashboardModule.User -- AdmissionsModule.User: is synced with 
+	DashboardModule.User -- FinanceModule.User: is synced with 
+	DashboardModule.User -- ManageUsersModule.User: is synced with 
+
+	DashboardModule.Navigator -- ExaminationsModule: navigates to
+	DashboardModule.Navigator -- AttendanceModule: navigates to
+	DashboardModule.Navigator -- HumanResourcesModule: navigates to
+	DashboardModule.Navigator -- MessagesModule: navigates to
+	DashboardModule.Navigator -- StudentDetails: navigates to
+	DashboardModule.Navigator -- AdmissionsModule: navigates to
+	DashboardModule.Navigator -- TimetableModule: navigates to
+
+@enduml
